@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lifematch/screens/Signin.dart';
 import 'package:lifematch/screens/mainpage.dart';
 
 void main() {
@@ -18,6 +19,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: ThemeData.dark(),
       home: Mainpage(),
+      initialRoute: '/',
+      routes: {
+        '/':(context) => Mainpage(),
+        '/signin':(context) => Signin(),
+      },
     );
   }
 }

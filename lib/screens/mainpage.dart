@@ -32,11 +32,39 @@ class _MainpageState extends State<Mainpage> {
           SizedBox(
             height: 450,
           ),
-          MaterialButton(
-            onPressed: () {},
-            child: Text('Sign in'),
+          newbutton(
+            text: Text('Sign In'),
+            onpress: () {
+              
+            },
           ),
+          newbutton(
+            text: Text('Sign Up'),
+            onpress: () {
+              
+            },
+          )
         ],
+      ),
+    );
+  }
+}
+
+class newbutton extends StatelessWidget {
+  Text? text;
+  Function()? onpress;
+
+  newbutton({this.text,required this.onpress});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 160),
+      child: MaterialButton(
+        color: Colors.red,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        onPressed: onpress,
+        child: text,
       ),
     );
   }
