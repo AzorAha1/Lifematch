@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lifematch/screens/mainpage.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -14,6 +15,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return const SizedBox();
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: Mainpage(),
+    );
   }
 }
