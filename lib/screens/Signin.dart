@@ -10,8 +10,8 @@ class Signin extends StatefulWidget {
 class _SigninState extends State<Signin> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Signin'),
+    return Scaffold(
+      appBar: AppBar(title: Text('s')),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lifematch/screens/Signin.dart';
+import 'package:lifematch/screens/Signup.dart';
 import 'package:lifematch/screens/mainpage.dart';
 
 void main() {
@@ -14,15 +15,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool mode = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
-      home: Mainpage(),
       initialRoute: '/',
       routes: {
-        '/':(context) => Mainpage(),
-        '/signin':(context) => Signin(),
+        '/': (context) => Mainpage(),
+        '/signin': (context) => Signin(),
+        '/signup': (context) => Signup(),
       },
     );
   }
