@@ -20,6 +20,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/',
+      theme: mode ? ThemeData.light() : ThemeData.dark(),
       routes: {
         '/': (context) => Mainpage(),
         '/signin': (context) => Signin(),
