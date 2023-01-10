@@ -67,16 +67,39 @@ class _SigninState extends State<Signin> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
-                InkWell(
-                  child: Text(
-                    'Click to Sign up here',
-                    style: GoogleFonts.aBeeZee(color: Colors.red),
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/signup');
-                  },
+                // InkWell(
+                //   child: Text(
+                //     'Click to Sign up here',
+                //     style: GoogleFonts.aBeeZee(color: Colors.red),
+                //   ),
+                //   onTap: () {
+                //     Navigator.pushNamed(context, '/signup');
+                //   },
+                // ),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        indent: 20,
+                        endIndent: 20,
+                        thickness: 1,
+                      ),
+                    ),
+                    Text(
+                      'Or Continue with',
+                      style: GoogleFonts.aBeeZee(color: Color.fromARGB(221, 193, 181, 181)),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        indent: 20,
+                        endIndent: 20,
+                        thickness: 1,
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),
