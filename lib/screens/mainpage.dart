@@ -4,73 +4,77 @@ import 'package:switcher/core/switcher_size.dart';
 import 'package:switcher/switcher.dart';
 
 class Mainpage extends StatefulWidget {
-  const Mainpage({Key? key}) : super(key: key);
-
+  
+  bool mode = false;
   @override
   State<Mainpage> createState() => _MainpageState();
 }
 
 class _MainpageState extends State<Mainpage> {
-  bool mode = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: mode ? ThemeData.dark() : ThemeData.light(),
+      theme: widget.mode ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
-        body: Column(
-          children: [
-            SizedBox(
-              height: 50,
+        body: SingleChildScrollView(
+          child: Expanded(
+            flex: 1,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 50,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 150),
+                  child: Switcher(
+                    value: false,
+                    size: SwitcherSize.large,
+                    switcherButtonRadius: 50,
+                    enabledSwitcherButtonRotate: true,
+                    iconOff: Icons.light_mode,
+                    iconOn: Icons.dark_mode,
+                    colorOff: Colors.redAccent.withOpacity(0.3),
+                    colorOn: Colors.red,
+                    onChanged: (bool state) {
+                      widget.mode = state;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(160, 100, 0, 0),
+                  child: Expanded(
+                    child: Image.asset(
+                      'images/background.png',
+                      scale: 5,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(160, 5, 0, 0),
+                  child: Text(
+                    'LifeMatch',
+                    style: GoogleFonts.aBeeZee(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(
+                  height: 400,
+                ),
+                newbutton(
+                  text: Text('Sign In'),
+                  onpress: () {
+                    Navigator.pushNamed(context, '/signin');
+                  },
+                ),
+                newbutton(
+                  text: Text('Sign Up'),
+                  onpress: () {
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                ),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 150),
-              child: Switcher(
-                value: false,
-                size: SwitcherSize.large,
-                switcherButtonRadius: 50,
-                enabledSwitcherButtonRotate: true,
-                iconOff: Icons.light_mode,
-                iconOn: Icons.dark_mode,
-                colorOff: Colors.redAccent.withOpacity(0.3),
-                colorOn: Colors.red,
-                onChanged: (bool state) {
-                  setState(() {
-                    mode = state;
-                  });
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(160, 100, 0, 0),
-              child: Image.asset(
-                'images/background.png',
-                scale: 5,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(160, 5, 0, 0),
-              child: Text(
-                'LifeMatch',
-                style: GoogleFonts.aBeeZee(
-                    fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(
-              height: 400,
-            ),
-            newbutton(
-              text: Text('Sign In'),
-              onpress: () {
-                Navigator.pushNamed(context, '/signin');
-              },
-            ),
-            newbutton(
-              text: Text('Sign Up'),
-              onpress: () {
-                Navigator.pushNamed(context, '/signup');
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );
