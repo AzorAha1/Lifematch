@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifematch/constants.dart';
 import 'package:lifematch/screens/mainpage.dart';
+import 'package:lifematch/Database/auth.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -11,6 +12,8 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
+  final _signinanon = Database();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +68,13 @@ class _SigninState extends State<Signin> {
                 Padding(
                   padding: const EdgeInsets.only(right: 150, bottom: 20.0),
                   child: newbutton(
-                    onpress: (() {}),
+                    onpress: (() async {
+                      dynamic result = await _signinanon.signinAnon();
+
+                      if(result != null){
+                        
+                      }
+                    }),
                     text: Text('Log in'),
                   ),
                 ),
@@ -134,7 +143,10 @@ class _SigninState extends State<Signin> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Not a member yet ? ',style: GoogleFonts.aBeeZee(),),
+              Text(
+                'Not a member yet ? ',
+                style: GoogleFonts.aBeeZee(),
+              ),
               InkWell(
                 onTap: () => Navigator.pushNamed(context, '/signup'),
                 child: Text(
