@@ -5,7 +5,7 @@ import 'package:switcher/switcher.dart';
 
 class Mainpage extends StatefulWidget {
   
-  bool mode = false;
+  bool mode = true;
   @override
   State<Mainpage> createState() => _MainpageState();
 }
