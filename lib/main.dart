@@ -1,9 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lifematch/screens/Signin.dart';
 import 'package:lifematch/screens/Signup.dart';
+import 'package:lifematch/screens/home.dart';
 import 'package:lifematch/screens/mainpage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -25,6 +31,7 @@ class _MyAppState extends State<MyApp> {
         '/': (context) => Mainpage(),
         '/signin': (context) => Signin(),
         '/signup': (context) => Signup(),
+        '/home':(context) => Homepage(),
       },
     );
   }

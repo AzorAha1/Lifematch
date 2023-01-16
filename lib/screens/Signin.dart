@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifematch/constants.dart';
@@ -12,7 +14,13 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
-  final _signinanon = Database();
+  String email = '';
+  String password = '';
+  String error = '';
+  final signinanon = Database();
+
+  TextEditingController email_controller = TextEditingController();
+  TextEditingController password_controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +58,8 @@ class _SigninState extends State<Signin> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: TextFormField(
+                    controller: email_controller,
+                    onChanged: (value) => email = value,
                     decoration: ktextformfield.copyWith(
                         hintText: 'Username or Email',
                         hintStyle: GoogleFonts.aBeeZee()),
@@ -58,6 +68,9 @@ class _SigninState extends State<Signin> {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: TextFormField(
+                    controller: password_controller,
+                    obscureText: true,
+                    onChanged: (value) => password = value,
                     decoration: ktextformfield.copyWith(
                         hintText: 'Password', hintStyle: GoogleFonts.aBeeZee()),
                   ),
@@ -68,18 +81,32 @@ class _SigninState extends State<Signin> {
                 Padding(
                   padding: const EdgeInsets.only(right: 150, bottom: 20.0),
                   child: newbutton(
-                    onpress: (() async {
-                      dynamic result = await _signinanon.signinAnon();
-
-                      if(result != null){
-                        
+                    onpress: () async {
+                      print(email);
+                      print(password);
+                      email_controller.clear();
+                      password_controller.clear();
+                      dynamic result =
+                          await signinanon.signinWithEmailandPassword(
+                              email: email, password: password);
+                      if (result != null) {
+                        setState(() {
+                          Navigator.pushNamed(context, '/home');
+                          print('logged in');
+                        });
+                      } else {
+                        setState(() {
+                          error =
+                              'Invalid Login Credentials\n             Try Again!';
+                        });
                       }
-                    }),
+                    },
                     text: Text('Log in'),
                   ),
                 ),
+
                 SizedBox(
-                  height: 50,
+                  height: 40,
                 ),
                 // InkWell(
                 //   child: Text(
@@ -130,10 +157,16 @@ class _SigninState extends State<Signin> {
                     ),
                     imagecontain(
                       imagepath: 'images/anonymous.png',
-                      onpress: () {},
+                      onpress: () async {
+                        dynamic result = await signinanon.signinAnon();
+
+                        if (result != null) {
+                          Navigator.pushNamed(context, '/home');
+                        }
+                      },
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -156,6 +189,13 @@ class _SigninState extends State<Signin> {
               ),
             ],
           ),
+          SizedBox(
+            height: 80,
+          ),
+          Text(
+            error,
+            style: GoogleFonts.aBeeZee(color: Colors.orange),
+          )
         ],
       ),
     );
