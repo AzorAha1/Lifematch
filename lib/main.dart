@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lifematch/screens/Signin.dart';
 import 'package:lifematch/screens/Signup.dart';
+import 'package:lifematch/screens/forgotpassword.dart';
 import 'package:lifematch/screens/home.dart';
 import 'package:lifematch/screens/mainpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,6 +33,7 @@ class _MyAppState extends State<MyApp> {
         '/signin': (context) => Signin(),
         '/signup': (context) => Signup(),
         '/home':(context) => Homepage(),
+        '/forgotpassword':(context) => Forgotpassword(),
       },
     );
   }

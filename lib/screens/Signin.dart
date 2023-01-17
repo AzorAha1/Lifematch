@@ -75,6 +75,14 @@ class _SigninState extends State<Signin> {
                         hintText: 'Password', hintStyle: GoogleFonts.aBeeZee()),
                   ),
                 ),
+                
+                Padding(
+                  padding: const EdgeInsets.only(left: 250),
+                  child: InkWell(
+                    onTap: () => Navigator.pushReplacementNamed(context, '/forgotpassword'),
+                    child: Text('Forgot Password ?',style: GoogleFonts.aBeeZee(color: Colors.red),),
+                  ),
+                ),
                 SizedBox(
                   height: 20,
                 ),
