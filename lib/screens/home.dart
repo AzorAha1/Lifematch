@@ -12,7 +12,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final _auth = FirebaseAuth.instance;
-  final user = FirebaseAuth.instance.currentUser;
+  final user =  FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +43,18 @@ class _HomepageState extends State<Homepage> {
                   width: 20,
                 ),
                 GestureDetector(
-                  onTap: () => print(user?.displayName),
+                  onTap: () => print(user.displayName),
                   child: CircleAvatar(
-                    child: Text(user!.displayName.toString()),
+                    backgroundColor: Colors.purple,
+                    child: Text(user.email!.substring(0,1).toUpperCase(),style: GoogleFonts.aBeeZee(),),
                   ),
                 )
               ],
             ),
           ),
+         Center(
+          child: Text(user.email!),
+         )
         ],
       ),
     );

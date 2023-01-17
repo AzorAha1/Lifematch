@@ -4,6 +4,7 @@ import 'package:lifematch/Database/auth.dart';
 import '../constants.dart';
 import 'Signin.dart';
 import 'mainpage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -22,6 +23,21 @@ class _SignupState extends State<Signup> {
   final age_controller = TextEditingController();
   final firstname_controller = TextEditingController();
   final lastname_controller = TextEditingController();
+  final gender_controller = TextEditingController();
+
+  Future adduserinfo(
+      {required String firstname,
+      required String lastname,
+      required String age,
+      required String gender}) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'firstname': firstname,
+      'lastname': lastname,
+      'age': age,
+      'gender': gender,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +104,6 @@ class _SignupState extends State<Signup> {
                     padding: const EdgeInsets.all(20.0),
                     child: TextFormField(
                       controller: firstname_controller,
-
                       decoration: ktextformfield.copyWith(
                           hintText: 'First Name',
                           hintStyle: GoogleFonts.aBeeZee()),
@@ -98,7 +113,6 @@ class _SignupState extends State<Signup> {
                     padding: const EdgeInsets.all(20.0),
                     child: TextFormField(
                       controller: lastname_controller,
-
                       decoration: ktextformfield.copyWith(
                           hintText: 'Last Name',
                           hintStyle: GoogleFonts.aBeeZee()),
@@ -108,7 +122,6 @@ class _SignupState extends State<Signup> {
                     padding: const EdgeInsets.all(20.0),
                     child: TextFormField(
                       controller: age_controller,
-
                       decoration: ktextformfield.copyWith(
                           hintText: 'Age', hintStyle: GoogleFonts.aBeeZee()),
                     ),
@@ -116,10 +129,9 @@ class _SignupState extends State<Signup> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: TextFormField(
-                      //controller: email_controller,
-
+                      controller: gender_controller,
                       decoration: ktextformfield.copyWith(
-                          hintText: '', hintStyle: GoogleFonts.aBeeZee()),
+                          hintText: 'Sex', hintStyle: GoogleFonts.aBeeZee()),
                     ),
                   ),
                   Padding(
@@ -130,6 +142,12 @@ class _SignupState extends State<Signup> {
                         email_controller.clear();
                         dynamic result = await _auth.signupWithEmailandPassword(
                             email: email, password: password);
+                        adduserinfo(
+                          age: age_controller.text,
+                          lastname: lastname_controller.text,
+                          firstname: firstname_controller.text,
+                          gender: gender_controller.text,
+                        );
                         if (result != null) {
                           setState(() {
                             Navigator.pushReplacementNamed(context, '/home');
