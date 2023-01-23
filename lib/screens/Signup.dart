@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifematch/Database/auth.dart';
@@ -14,6 +15,14 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  void Loading() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CircularProgressIndicator();
+        });
+  }
+
   String email = '';
   String password = '';
   String error = '';
@@ -24,7 +33,10 @@ class _SignupState extends State<Signup> {
   final firstname_controller = TextEditingController();
   final lastname_controller = TextEditingController();
   final gender_controller = TextEditingController();
-
+  final confirm_password_controller = TextEditingController();
+  User? user;
+  final _formkey = GlobalKey<FormState>();
+  @override
   Future adduserinfo(
       {required String firstname,
       required String lastname,
@@ -68,11 +80,17 @@ class _SignupState extends State<Signup> {
               height: 30,
             ),
             Form(
+              key: _formkey,
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Empty Field';
+                        }
+                      },
                       controller: email_controller,
                       onChanged: (value) => email = value,
                       decoration: ktextformfield.copyWith(
@@ -83,6 +101,12 @@ class _SignupState extends State<Signup> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: TextFormField(
+                      validator: (value) {
+                        if (value!.length < 6) {
+                          return 'Password needs to be 6+ chars';
+                        }
+                      },
+                      obscureText: true,
                       controller: password_controller,
                       onChanged: (value) => password = value,
                       decoration: ktextformfield.copyWith(
@@ -93,7 +117,13 @@ class _SignupState extends State<Signup> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: TextFormField(
-                      controller: password_controller,
+                      validator: (value) {
+                        if (value != password_controller.text) {
+                          return "Doesn't Match Password";
+                        }
+                      },
+                      obscureText: true,
+                      controller: confirm_password_controller,
                       onChanged: (value) => email = value,
                       decoration: ktextformfield.copyWith(
                           hintText: 'Confirm Password',
@@ -103,6 +133,11 @@ class _SignupState extends State<Signup> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Empty Field';
+                        }
+                      },
                       controller: firstname_controller,
                       decoration: ktextformfield.copyWith(
                           hintText: 'First Name',
@@ -112,6 +147,11 @@ class _SignupState extends State<Signup> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Empty field';
+                        }
+                      },
                       controller: lastname_controller,
                       decoration: ktextformfield.copyWith(
                           hintText: 'Last Name',
@@ -138,24 +178,27 @@ class _SignupState extends State<Signup> {
                     padding: const EdgeInsets.only(right: 150),
                     child: newbutton(
                       onpress: (() async {
-                        password_controller.clear();
-                        email_controller.clear();
-                        dynamic result = await _auth.signupWithEmailandPassword(
-                            email: email, password: password);
-                        adduserinfo(
-                          age: age_controller.text,
-                          lastname: lastname_controller.text,
-                          firstname: firstname_controller.text,
-                          gender: gender_controller.text,
-                        );
-                        if (result != null) {
-                          setState(() {
-                            Navigator.pushReplacementNamed(context, '/home');
-                          });
-                        } else {
-                          setState(() {
-                            error = 'Format E-mail or Password Properly';
-                          });
+                        if (_formkey.currentState!.validate()) {
+                          password_controller.clear();
+                          //email_controller.clear();
+                          dynamic result =
+                              await _auth.signupWithEmailandPassword(
+                                  email: email, password: password);
+                          adduserinfo(
+                            age: age_controller.text,
+                            lastname: lastname_controller.text,
+                            firstname: firstname_controller.text,
+                            gender: gender_controller.text,
+                          );
+                          if (result != null) {
+                            setState(() {
+                              Navigator.pushReplacementNamed(context, '/home');
+                            });
+                          } else {
+                            setState(() {
+                              error = 'Format E-mail or Password Properly';
+                            });
+                          }
                         }
                       }),
                       text: Text('Register'),
@@ -196,13 +239,6 @@ class _SignupState extends State<Signup> {
                     children: [
                       imagecontain(
                         imagepath: 'images/googleimage.png',
-                        onpress: () {},
-                      ),
-                      SizedBox(
-                        width: 30,
-                      ),
-                      imagecontain(
-                        imagepath: 'images/anonymous.png',
                         onpress: () {},
                       ),
                     ],

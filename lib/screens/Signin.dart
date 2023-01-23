@@ -17,7 +17,7 @@ class _SigninState extends State<Signin> {
   String email = '';
   String password = '';
   String error = '';
-  final signinanon = Database();
+  final signin = Database();
 
   TextEditingController email_controller = TextEditingController();
   TextEditingController password_controller = TextEditingController();
@@ -75,12 +75,16 @@ class _SigninState extends State<Signin> {
                         hintText: 'Password', hintStyle: GoogleFonts.aBeeZee()),
                   ),
                 ),
-                
+
                 Padding(
                   padding: const EdgeInsets.only(left: 250),
                   child: InkWell(
-                    onTap: () => Navigator.pushReplacementNamed(context, '/forgotpassword'),
-                    child: Text('Forgot Password ?',style: GoogleFonts.aBeeZee(color: Colors.red),),
+                    onTap: () => Navigator.pushReplacementNamed(
+                        context, '/forgotpassword'),
+                    child: Text(
+                      'Forgot Password ?',
+                      style: GoogleFonts.aBeeZee(color: Colors.red),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -94,12 +98,13 @@ class _SigninState extends State<Signin> {
                       print(password);
                       email_controller.clear();
                       password_controller.clear();
-                      dynamic result =
-                          await signinanon.signinWithEmailandPassword(
-                              email: email, password: password);
+
+                      dynamic result = await signin.signinWithEmailandPassword(
+                          email: email, password: password);
                       if (result != null) {
                         setState(() {
                           Navigator.pushNamed(context, '/home');
+
                           print('logged in');
                         });
                       } else {
@@ -166,10 +171,13 @@ class _SigninState extends State<Signin> {
                     imagecontain(
                       imagepath: 'images/anonymous.png',
                       onpress: () async {
-                        dynamic result = await signinanon.signinAnon();
-
-                        if (result != null) {
-                          Navigator.pushNamed(context, '/home');
+                        dynamic result = await signin.signinAnon();
+                        if (result == null) {
+                          Navigator.of(context).pop;
+                          print(null);
+                        } else {
+                          Navigator.pushReplacementNamed(context, '/home');
+                          print(FirebaseAuth.instance.currentUser);
                         }
                       },
                     ),
