@@ -96,8 +96,6 @@ class _SigninState extends State<Signin> {
                     onpress: () async {
                       print(email);
                       print(password);
-                      email_controller.clear();
-                      password_controller.clear();
 
                       dynamic result = await signin.signinWithEmailandPassword(
                           email: email, password: password);
@@ -107,6 +105,8 @@ class _SigninState extends State<Signin> {
 
                           print('logged in');
                         });
+                        email_controller.clear();
+                        password_controller.clear();
                       } else {
                         setState(() {
                           error =
@@ -172,10 +172,12 @@ class _SigninState extends State<Signin> {
                       imagepath: 'images/anonymous.png',
                       onpress: () async {
                         dynamic result = await signin.signinAnon();
+
                         if (result == null) {
                           Navigator.of(context).pop;
                           print(null);
                         } else {
+                          
                           Navigator.pushReplacementNamed(context, '/home');
                           print(FirebaseAuth.instance.currentUser);
                         }
