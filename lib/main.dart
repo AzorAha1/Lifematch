@@ -4,7 +4,7 @@ import 'package:lifematch/screens/Signin.dart';
 import 'package:lifematch/screens/Signup.dart';
 import 'package:lifematch/screens/forgotpassword.dart';
 import 'package:lifematch/screens/home.dart';
-import 'package:lifematch/screens/loading.dart';
+
 import 'package:lifematch/screens/mainpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
         '/signup': (context) => Signup(),
         '/home':(context) => Homepage(),
         '/forgotpassword':(context) => Forgotpassword(),
-        '/loading':(context)=>Loading(),
+       
       },
     );
   }
