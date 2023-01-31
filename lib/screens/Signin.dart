@@ -132,6 +132,7 @@ class _SigninState extends State<Signin> {
                             password_controller.clear();
                           } else {
                             setState(() {
+                              Loading = false;
                               error =
                                   'Invalid Login Credentials\n             Try Again!';
                             });
@@ -202,10 +203,9 @@ class _SigninState extends State<Signin> {
                           } else {
                             Navigator.pop(context);
                             setState(() {
-                            Loading = false;
-                          });
+                              Loading = false;
+                            });
                           }
-                          
                         },
                       ),
                       SizedBox(

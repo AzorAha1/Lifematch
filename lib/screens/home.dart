@@ -41,11 +41,11 @@ class _HomepageState extends State<Homepage> {
               child: Row(
                 //mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // InkWell(
-                  //   child: Icon(Icons.arrow_back_ios),
-                  // ),
+                  InkWell(
+                    child: Icon(Icons.arrow_back_ios),
+                  ),
                   SizedBox(
-                    width: 130,
+                    width: 90,
                   ),
                   Text(
                     'LifeMatch',
@@ -112,8 +112,11 @@ class _HomepageState extends State<Homepage> {
                 ],
               ),
             ),
-            Center(
-              child: Text(user?.email ?? 'not signed in'),
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Center(
+                child: Text(user?.email ?? 'not signed in'),
+              ),
             )
           ],
         ),

@@ -4,7 +4,6 @@ import 'package:switcher/core/switcher_size.dart';
 import 'package:switcher/switcher.dart';
 
 class Mainpage extends StatefulWidget {
-  
   bool mode = true;
   @override
   State<Mainpage> createState() => _MainpageState();
@@ -84,14 +83,18 @@ class _MainpageState extends State<Mainpage> {
 class newbutton extends StatelessWidget {
   Text? text;
   Function()? onpress;
+  double? height;
+  double? width;
 
-  newbutton({this.text, required this.onpress});
+  newbutton({this.text, required this.onpress, this.height,this.width});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 160),
       child: MaterialButton(
+        height: height,
+        minWidth: width,
         color: Colors.red,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         onPressed: onpress,

@@ -9,6 +9,7 @@ import 'package:lifematch/screens/mainpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -29,12 +30,15 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       initialRoute: '/',
       theme: mode ? ThemeData.light() : ThemeData.dark(),
+      
       routes: {
         '/': (context) => Mainpage(),
         '/signin': (context) => Signin(),
         '/signup': (context) => Signup(),
         '/home':(context) => Homepage(),
         '/forgotpassword':(context) => Forgotpassword(),
+        
+        
        
       },
     );

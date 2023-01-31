@@ -1,16 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifematch/Database/auth.dart';
+import 'package:lifematch/constants.dart';
+import 'package:lifematch/screens/mainpage.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import '../constants.dart';
-import 'Signin.dart';
-import 'mainpage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:country_picker/country_picker.dart';
 
 class Signup extends StatefulWidget {
-  const Signup({super.key});
-
   @override
   State<Signup> createState() => _SignupState();
 }
@@ -19,313 +17,268 @@ class _SignupState extends State<Signup> {
   String email = '';
   String password = '';
   String error = '';
-  final _auth = Database();
+  String country = '';
+  String city = '';
+  String state = '';
+  bool iscompleted = false;
+  bool Loading = false;
+
   String _selectedgender = 'male';
   TextEditingController email_controller = TextEditingController();
   TextEditingController password_controller = TextEditingController();
   final age_controller = TextEditingController();
-  final firstname_controller = TextEditingController();
-  final lastname_controller = TextEditingController();
+  final name_controller = TextEditingController();
+
   TextEditingController gender_controller = TextEditingController();
   final confirm_password_controller = TextEditingController();
-  User? user;
+
   final _formkey = GlobalKey<FormState>();
-  @override
-  Future adduserinfo(
-      {required String firstname,
-      required String lastname,
-      required String age,
-      required String gender}) async {
+  int _currentstep = 0;
+
+  Future adduserinfo({
+    required String firstname,
+    required String gender,
+    required String state,
+    required String city,
+    required String country,
+  }) async {
     await FirebaseFirestore.instance.collection('users').add({
       'firstname': firstname,
-      'lastname': lastname,
-      'age': age,
       'gender': gender,
+      'state': state,
+      'city': city,
+      'country': country,
     });
   }
-
-  bool Loading = false;
 
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: Loading,
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 50, left: 20),
-                child: Row(
-                  children: [
-                    InkWell(
-                        child: Icon(Icons.arrow_back_ios),
-                        onTap: () {
-                          Navigator.pop(context);
-                        }),
-                    SizedBox(
-                      width: 130,
-                    ),
-                    Text(
-                      'Sign Up',
-                      style: GoogleFonts.aBeeZee(
-                          fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              Form(
-                key: _formkey,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      error,
-                      style: GoogleFonts.aBeeZee(color: Colors.orange),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Empty Field';
-                          }
-                        },
-                        controller: email_controller,
-                        onChanged: (value) {
-                          setState(() {
-                            email = value;
-                          });
-                        },
-                        decoration: ktextformfield.copyWith(
-                            hintText: 'Username or Email',
-                            hintStyle: GoogleFonts.aBeeZee()),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value!.length < 6) {
-                            return 'Password needs to be 6+ chars';
-                          }
-                          
-                        },
-                        obscureText: true,
-                        controller: password_controller,
-                        onChanged: (value) {
-                          setState(() {
-                            password = value;
-                          });
-                        },
-                        decoration: ktextformfield.copyWith(
-                            hintText: 'Password',
-                            hintStyle: GoogleFonts.aBeeZee()),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value != password_controller.text) {
-                            return "Doesn't Match Password";
-                          }
-                        },
-                        obscureText: true,
-                        controller: confirm_password_controller,
-                        
-                        decoration: ktextformfield.copyWith(
-                            hintText: 'Confirm Password',
-                            hintStyle: GoogleFonts.aBeeZee()),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Empty Field';
-                          }
-                        },
-                        controller: firstname_controller,
-                        decoration: ktextformfield.copyWith(
-                            hintText: 'First Name',
-                            hintStyle: GoogleFonts.aBeeZee()),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Empty field';
-                          }
-                        },
-                        controller: lastname_controller,
-                        decoration: ktextformfield.copyWith(
-                            hintText: 'Last Name',
-                            hintStyle: GoogleFonts.aBeeZee()),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: TextFormField(
-                        controller: age_controller,
-                        decoration: ktextformfield.copyWith(
-                            hintText: 'Age', hintStyle: GoogleFonts.aBeeZee()),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Sex: ',
-                            style: GoogleFonts.aBeeZee(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          DropdownButton<String>(
-                            value: _selectedgender,
-                            items: [
-                              DropdownMenuItem(
-                                child: Text(
-                                  'Male',
-                                  style: GoogleFonts.aBeeZee(fontSize: 15),
-                                ),
-                                value: 'male',
-                              ),
-                              DropdownMenuItem(
-                                child: Text(
-                                  'Female',
-                                  style: GoogleFonts.aBeeZee(fontSize: 15),
-                                ),
-                                value: 'female',
-                              ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedgender = value!;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 150),
-                      child: newbutton( 
-                        onpress: (() async {
-                          print(email);
-                          if (_formkey.currentState!.validate()) {
-                            setState(() {
-                              Loading = true;
-                            });
-                            dynamic result =
-                                await _auth.signupWithEmailandPassword(
-                                    email: email, password: password);
-                            // password_controller.clear();
-                            // confirm_password_controller.clear();
-                            // email_controller.clear();
-                            // age_controller.clear();
-                            // firstname_controller.clear();
-                            // lastname_controller.clear();
+        body: SafeArea(
+          child: Form(
+            key: _formkey,
+            child: Theme(
+              data:
+                  ThemeData(accentColor: Colors.red, primarySwatch: Colors.red),
+              child: Stepper(
+                type: StepperType.vertical,
+                onStepTapped: (value) {
+                  _formkey.currentState!.validate();
+                  setState(() {
+                    _currentstep = value;
+                  });
+                },
+                currentStep: _currentstep,
+                onStepContinue: () {
+                  final laststep = _currentstep == getsteps().length - 1;
+                  _formkey.currentState!.validate();
+                  bool valid = completed();
+                  if (valid == true) {
+                    if (laststep) {
+                      setState(() {
+                        iscompleted = true;
+                      });
 
-                            if (result != null) {
-                              adduserinfo(
-                                age: age_controller.text,
-                                lastname: lastname_controller.text,
-                                firstname: firstname_controller.text,
-                                gender: _selectedgender,
-                              );
-                              setState(() {
-                                Navigator.pushReplacementNamed(
-                                    context, '/home');
-                                Loading = false;
-                              });
-                            } else if (result == null) {
-                              setState(() {
-                                Loading = false;
-                                error = 'Format E-mail or Password Properly';
-                              });
-                            }
-                          }
-                        }),
-                        text: Text('Register'),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            indent: 20,
-                            endIndent: 20,
-                            thickness: 1,
-                          ),
-                        ),
-                        Text(
-                          'Or Continue with',
-                          style: GoogleFonts.aBeeZee(
-                              color: Color.fromARGB(221, 193, 181, 181)),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            indent: 20,
-                            endIndent: 20,
-                            thickness: 1,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        imagecontain(
-                          imagepath: 'images/googleimage.png',
-                          onpress: () {},
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Registration'),
+                              content: Text(
+                                  'Are you satified with registration information?'),
+                              actions: [
+                                newbutton(
+                                  width: 10,
+                                  onpress: () async {
+                                    setState(() {
+                                      Loading = true;
+                                    });
+                                    dynamic result = Database()
+                                        .signupWithEmailandPassword(
+                                            email: email, password: password);
+
+                                    if (result != null) {
+                                      setState(() {
+                                        Loading = false;
+                                      });
+                                      Navigator.pushReplacementNamed(
+                                          context, '/home');
+                                      print(result);
+                                      setState(() {
+                                        adduserinfo(
+                                            firstname: name_controller.text,
+                                            gender: _selectedgender,
+                                            state: state,
+                                            city: city,
+                                            country: country);
+                                      });
+                                    }
+                                  },
+                                  text: Text('Yes, Sign me up'),
+                                ),
+                                newbutton(
+                                  onpress: () {},
+                                  text: Text('No, Take me back'),
+                                ),
+                              ],
+                            );
+                          });
+
+                      print('passed length');
+                    } else {
+                      setState(() {
+                        _currentstep++;
+                      });
+                    }
+                  }
+                },
+                onStepCancel: () {
+                  if (_currentstep == 0) {
+                    null;
+                  } else {
+                    setState(() {
+                      _currentstep -= 1;
+                    });
+                  }
+                },
+                steps: getsteps(),
               ),
-              SizedBox(
-                height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Already have an account? ',
-                    style: GoogleFonts.aBeeZee(),
-                  ),
-                  InkWell(
-                    onTap: () => Navigator.pushNamed(context, '/signin'),
-                    child: Text(
-                      'Log in ',
-                      style: GoogleFonts.aBeeZee(color: Colors.red),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 80,
-              ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  bool completed() {
+    if (_currentstep == 0) {
+      if (email_controller.text.isEmpty) {
+        return false;
+      } else {
+        return true;
+      }
+    } else if (_currentstep == 1) {
+      if (password_controller.text.isEmpty ||
+          confirm_password_controller.text != password_controller.text) {
+        return false;
+      } else {
+        return true;
+      }
+    } else if (name_controller.text.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  List<Step> getsteps() => [
+        Step(
+          isActive: _currentstep >= 0,
+          title: Text('Email'),
+          content: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Empty Field';
+              }
+            },
+            controller: email_controller,
+            onChanged: (value) {
+              setState(() {
+                email = value;
+              });
+            },
+            decoration: ktextformfield.copyWith(
+                hintText: 'Username or Email',
+                hintStyle: GoogleFonts.aBeeZee()),
+          ),
+        ),
+        Step(
+          isActive: _currentstep >= 1,
+          title: Text('Password'),
+          content: Column(
+            children: [
+              TextFormField(
+                validator: (value) {
+                  if (value!.length < 6) {
+                    return 'Password needs to be 6+ chars';
+                  }
+                },
+                obscureText: true,
+                controller: password_controller,
+                onChanged: (value) {
+                  setState(() {
+                    password = value;
+                  });
+                },
+                decoration: ktextformfield.copyWith(
+                    hintText: 'Password', hintStyle: GoogleFonts.aBeeZee()),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value != password_controller.text) {
+                    return "Doesn't Match Password";
+                  }
+                },
+                obscureText: true,
+                controller: confirm_password_controller,
+                decoration: ktextformfield.copyWith(
+                    hintText: 'Confirm Password',
+                    hintStyle: GoogleFonts.aBeeZee()),
+              ),
+            ],
+          ),
+        ),
+        Step(
+          isActive: _currentstep >= 3,
+          title: Text('What do you want to be called ?'),
+          content: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Empty field';
+              }
+            },
+            controller: name_controller,
+            decoration: ktextformfield.copyWith(
+                hintText: 'Name', hintStyle: GoogleFonts.aBeeZee()),
+          ),
+        ),
+        Step(
+            title: Text('Location'),
+            content:Text(''),
+            ),
+        Step(
+          title: Text('Sex'),
+          content: DropdownButton<String>(
+            value: _selectedgender,
+            items: [
+              DropdownMenuItem(
+                child: Text(
+                  'Male',
+                  style: GoogleFonts.aBeeZee(fontSize: 15),
+                ),
+                value: 'male',
+              ),
+              DropdownMenuItem(
+                child: Text(
+                  'Female',
+                  style: GoogleFonts.aBeeZee(fontSize: 15),
+                ),
+                value: 'female',
+              ),
+            ],
+            onChanged: (value) {
+              setState(() {
+                _selectedgender = value!;
+              });
+            },
+          ),
+        )
+      ];
 }
+
+

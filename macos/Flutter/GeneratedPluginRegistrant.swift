@@ -9,7 +9,7 @@ import cloud_firestore
 import firebase_auth
 import firebase_core
 import modal_progress_hud_nsn
-import path_provider_macos
+import path_provider_foundation
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FLTFirebaseFirestorePlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseFirestorePlugin"))
