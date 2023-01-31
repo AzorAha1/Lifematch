@@ -31,7 +31,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  country_picker: ^2.0.19
+  country_pickers: ^2.0.0
   google_fonts: ^3.0.1
   switcher: ^1.0.0
   firebase_auth: ^4.2.5

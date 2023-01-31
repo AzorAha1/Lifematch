@@ -23,7 +23,7 @@ class _SignupState extends State<Signup> {
   bool iscompleted = false;
   bool Loading = false;
 
-  String _selectedgender = 'male';
+  String _selectedgender = 'empty';
   TextEditingController email_controller = TextEditingController();
   TextEditingController password_controller = TextEditingController();
   final age_controller = TextEditingController();
@@ -57,95 +57,121 @@ class _SignupState extends State<Signup> {
       inAsyncCall: Loading,
       child: Scaffold(
         body: SafeArea(
-          child: Form(
-            key: _formkey,
-            child: Theme(
-              data:
-                  ThemeData(accentColor: Colors.red, primarySwatch: Colors.red),
-              child: Stepper(
-                type: StepperType.vertical,
-                onStepTapped: (value) {
-                  _formkey.currentState!.validate();
-                  setState(() {
-                    _currentstep = value;
-                  });
-                },
-                currentStep: _currentstep,
-                onStepContinue: () {
-                  final laststep = _currentstep == getsteps().length - 1;
-                  _formkey.currentState!.validate();
-                  bool valid = completed();
-                  if (valid == true) {
-                    if (laststep) {
-                      setState(() {
-                        iscompleted = true;
-                      });
-
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text('Registration'),
-                              content: Text(
-                                  'Are you satified with registration information?'),
-                              actions: [
-                                newbutton(
-                                  width: 10,
-                                  onpress: () async {
-                                    setState(() {
-                                      Loading = true;
-                                    });
-                                    dynamic result = Database()
-                                        .signupWithEmailandPassword(
-                                            email: email, password: password);
-
-                                    if (result != null) {
-                                      setState(() {
-                                        Loading = false;
-                                      });
-                                      Navigator.pushReplacementNamed(
-                                          context, '/home');
-                                      print(result);
-                                      setState(() {
-                                        adduserinfo(
-                                            firstname: name_controller.text,
-                                            gender: _selectedgender,
-                                            state: state,
-                                            city: city,
-                                            country: country);
-                                      });
-                                    }
-                                  },
-                                  text: Text('Yes, Sign me up'),
-                                ),
-                                newbutton(
-                                  onpress: () {},
-                                  text: Text('No, Take me back'),
-                                ),
-                              ],
-                            );
-                          });
-
-                      print('passed length');
-                    } else {
-                      setState(() {
-                        _currentstep++;
-                      });
-                    }
-                  }
-                },
-                onStepCancel: () {
-                  if (_currentstep == 0) {
-                    null;
-                  } else {
-                    setState(() {
-                      _currentstep -= 1;
-                    });
-                  }
-                },
-                steps: getsteps(),
+          child: Column(
+            children: [
+              Padding(
+              padding: const EdgeInsets.only(top: 50, left: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  InkWell(
+                    child: Icon(Icons.arrow_back_ios),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SizedBox(
+                    width: 130,
+                  ),
+                  Text(
+                    'Registration',
+                    style: GoogleFonts.aBeeZee(
+                        fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ),
+              Form(
+                key: _formkey,
+                child: Theme(
+                  data:
+                      ThemeData(accentColor: Colors.red, primarySwatch: Colors.red),
+                  child: Stepper(
+                    type: StepperType.vertical,
+                    onStepTapped: (value) {
+                      _formkey.currentState!.validate();
+                      setState(() {
+                        _currentstep = value;
+                      });
+                    },
+                    currentStep: _currentstep,
+                    onStepContinue: () {
+                      final laststep = _currentstep == getsteps().length - 1;
+                      _formkey.currentState!.validate();
+                      bool valid = completed();
+                      if (valid == true) {
+                        if (laststep) {
+                          setState(() {
+                            iscompleted = true;
+                          });
+
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Registration'),
+                                  content: Text(
+                                      'Are you satified with registration information?'),
+                                  actions: [
+                                    newbutton(
+                                      width: 10,
+                                      onpress: () async {
+                                        setState(() {
+                                          Loading = true;
+                                        });
+                                        dynamic result = Database()
+                                            .signupWithEmailandPassword(
+                                                email: email, password: password);
+
+                                        if (result != null) {
+                                          setState(() {
+                                            Loading = false;
+                                          });
+                                          Navigator.pushReplacementNamed(
+                                              context, '/home');
+                                          print(result);
+                                          setState(() {
+                                            adduserinfo(
+                                                firstname: name_controller.text,
+                                                gender: _selectedgender,
+                                                state: state,
+                                                city: city,
+                                                country: country);
+                                          });
+                                        }
+                                      },
+                                      text: Text('Yes, Sign me up'),
+                                    ),
+                                    newbutton(
+                                      onpress: () {},
+                                      text: Text('No, Take me back'),
+                                    ),
+                                  ],
+                                );
+                              });
+
+                          print('passed length');
+                        } else {
+                          setState(() {
+                            _currentstep++;
+                          });
+                        }
+                      }
+                    },
+                    onStepCancel: () {
+                      if (_currentstep == 0) {
+                        null;
+                      } else {
+                        setState(() {
+                          _currentstep -= 1;
+                        });
+                      }
+                    },
+                    steps: getsteps(),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -248,37 +274,48 @@ class _SignupState extends State<Signup> {
           ),
         ),
         Step(
-            title: Text('Location'),
-            content:Text(''),
-            ),
+          title: Text('Location'),
+          content: Text(''),
+        ),
         Step(
           title: Text('Sex'),
-          content: DropdownButton<String>(
-            value: _selectedgender,
-            items: [
-              DropdownMenuItem(
-                child: Text(
-                  'Male',
-                  style: GoogleFonts.aBeeZee(fontSize: 15),
+          content: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.red),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: DropdownButton<String>(
+              value: _selectedgender,
+              items: [
+                DropdownMenuItem(
+                  child: Text(
+                    '*Empty*',
+                    style: GoogleFonts.aBeeZee(fontSize: 15),
+                  ),
+                  value: 'empty',
                 ),
-                value: 'male',
-              ),
-              DropdownMenuItem(
-                child: Text(
-                  'Female',
-                  style: GoogleFonts.aBeeZee(fontSize: 15),
+                DropdownMenuItem(
+                  child: Text(
+                    'Male',
+                    style: GoogleFonts.aBeeZee(fontSize: 15),
+                  ),
+                  value: 'male',
                 ),
-                value: 'female',
-              ),
-            ],
-            onChanged: (value) {
-              setState(() {
-                _selectedgender = value!;
-              });
-            },
+                DropdownMenuItem(
+                  child: Text(
+                    'Female',
+                    style: GoogleFonts.aBeeZee(fontSize: 15),
+                  ),
+                  value: 'female',
+                ),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _selectedgender = value!;
+                });
+              },
+            ),
           ),
         )
       ];
 }
-
-
