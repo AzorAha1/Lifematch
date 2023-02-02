@@ -5,13 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lifematch/screens/homepagetabs/chatpage.dart';
 import 'package:lifematch/screens/homepagetabs/likepage.dart';
 import 'package:lifematch/screens/homepagetabs/mainhome.dart';
-import 'package:lifematch/screens/homepagetabs/searchpage.dart';
 import 'package:lifematch/screens/mainpage.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:ionicons/ionicons.dart';
+
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class _HomepageState extends State<Homepage> {
     mainhome(),
     Likepage(),
     Chatpage(),
-    Searchpage(),
+    
   ];
   @override
   void initState() {
@@ -47,46 +48,64 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        bottomNavigationBar: GNav(
-          onTabChange: (value) {
-            setState(() {
-              _currentindex = value;
-            });
-          },
-          tabBackgroundColor: Colors.red.withOpacity(0.2),
-          backgroundColor: Colors.purple.withOpacity(0.1),
-          selectedIndex: _currentindex,
-          padding: EdgeInsets.all(20),
-          gap: 10,
-          tabs: const [
-            GButton(
-              haptic: true,
-              icon: LineIcons.home,
-              iconSize: 30,
-              text: 'Home',
-              textColor: Colors.white,
+        
+        bottomNavigationBar: Container(
+          color: Color(0xffBEA0FF),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+            child: GNav(
+              onTabChange: (value) {
+                setState(() {
+                  _currentindex = value;
+                });
+              },
+              
+              tabBorderRadius: 20,
+              tabBackgroundColor: Colors.black.withOpacity(0.2),
+              backgroundColor:Color(0xffBEA0FF),
+              selectedIndex: _currentindex,
+              padding: EdgeInsets.all(25),
+              iconSize: 15,
+              gap: 8,
+              tabs: const [
+                GButton(
+                  haptic: true,
+                  icon: LineIcons.home,
+                  iconColor: Colors.white,
+                  iconSize: 25,
+                  text: 'Home',
+                  textColor: Colors.white,
+                  iconActiveColor: Color(0xffBEA0FF),
+                ),
+                GButton(
+                  haptic: true,
+                  icon: LineIcons.heart,
+                  iconColor: Colors.white,
+                  iconSize: 25,
+                  text: 'Likes',
+                  textColor: Colors.white,
+                  iconActiveColor: Colors.white,
+                ),
+                GButton(
+                  haptic: true,
+                  icon: LineIcons.facebookMessenger,
+                  iconSize: 25,
+                  text: 'Chats',
+                  textColor: Colors.white,
+                  iconColor: Colors.white,
+                  iconActiveColor: Colors.white,
+                ),
+                GButton(
+                  haptic: true,
+                  icon: Ionicons.person,
+                  text: 'Account',
+                  textColor: Colors.white,
+                  iconColor:Colors.white,
+                  iconActiveColor: Colors.white,
+                ),
+              ],
             ),
-            GButton(
-              haptic: true,
-              icon: LineIcons.heart,
-              iconSize: 30,
-              text: 'Likes',
-              textColor: Colors.white,
-            ),
-            GButton(
-              haptic: true,
-              icon: LineIcons.facebookMessenger,
-              iconSize: 30,
-              text: 'Chats',
-              textColor: Colors.white,
-            ),
-            GButton(
-              haptic: true,
-              icon: LineIcons.search,
-              text: 'Search',
-              textColor: Colors.white,
-            ),
-          ],
+          ),
         ),
         body: pages[_currentindex],
       ),
