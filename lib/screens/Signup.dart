@@ -6,7 +6,8 @@ import 'package:lifematch/Database/auth.dart';
 import 'package:lifematch/constants.dart';
 import 'package:lifematch/screens/mainpage.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:country_picker/country_picker.dart';
+import 'package:country_pickers/countries.dart';
+import 'package:country_pickers/country_pickers.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -14,12 +15,245 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  final allcount = [
+    '*Choose a Country*',
+    'Afghanistan',
+    'Albania',
+    'Algeria',
+    'Andorra',
+    'Angola',
+    'Antigua and Barbuda',
+    'Argentina',
+    'Armenia',
+    'Australia',
+    'Austria',
+    'Austrian Empire',
+    'Azerbaijan',
+    'Baden',
+    'Bahamas',
+    'Bahrain',
+    'Bangladesh',
+    'Barbados',
+    'Bavaria',
+    'Belarus',
+    'Belgium',
+    'Belize',
+    'Benin (Dahomey)',
+    'Bolivia',
+    'Bosnia and Herzegovina',
+    'Botswana',
+    'Brazil',
+    'Brunei',
+    'Brunswick and Lüneburg',
+    'Bulgaria',
+    'Burkina Faso (Upper Volta)',
+    'Burma',
+    'Burundi',
+    'Cabo Verde',
+    'Cambodia',
+    'Cameroon',
+    'Canada',
+    'Cayman Islands',
+    'Central African Republic',
+    'Central American Federation',
+    'Chad',
+    'Chile',
+    'China',
+    'Colombia',
+    'Comoros',
+    'Congo Free State',
+    'Costa Rica',
+    "Cote d'Ivoire (Ivory Coast)",
+    'Croatia',
+    'Cuba',
+    'Cyprus',
+    'Czechia',
+    'Czechoslovakia',
+    'Democratic Republic of the Congo',
+    'Denmark',
+    'Djibouti',
+    'Dominica',
+    'Dominican Republic',
+    'Duchy of Parma',
+    'Ecuador',
+    'Egypt',
+    'El Salvador',
+    'Equatorial Guinea',
+    'Eritrea',
+    'Estonia',
+    'Eswatini',
+    'Ethiopia',
+    'Fiji',
+    'Finland',
+    'France',
+    'Gabon',
+    'Gambia',
+    'Georgia',
+    'Germany',
+    'Ghana',
+    'Grand Duchy of Tuscany',
+    'Greece',
+    'Grenada',
+    'Guatemala',
+    'Guinea',
+    'Guinea-Bissau',
+    'Guyana',
+    'Haiti',
+    'Hanover',
+    'Hanseatic Republics',
+    'Hawaii',
+    'Hesse',
+    'Holy See',
+    'Honduras',
+    'Hungary',
+    'Iceland',
+    'India',
+    'Indonesia',
+    'Iran',
+    'Iraq',
+    'Ireland',
+    'Israel',
+    'Italy',
+    'Jamaica',
+    'Japan',
+    'Jordan',
+    'Kazakhstan',
+    'Kenya',
+    'Kingdom of Serbia/Yugoslavia',
+    'Kiribati',
+    'Korea',
+    'Kosovo',
+    'Kuwait',
+    'Laos',
+    'Latvia',
+    'Lebanon',
+    'Lesotho',
+    'Lew Chew (Loochoo)',
+    'Liberia',
+    'Libya',
+    'Liechtenstein',
+    'Lithuania',
+    'Luxembourg',
+    'Madagascar',
+    'Malawi',
+    'Malaysia',
+    'Maldives',
+    'Mali',
+    'Malta',
+    'Marshall Islands',
+    'Mauritania',
+    'Mauritius',
+    'Mecklenburg-Schwerin',
+    'Mecklenburg-Strelitz',
+    'Mexico',
+    'Micronesia',
+    'Moldova',
+    'Monaco',
+    'Mongolia',
+    'Montenegro',
+    'Morocco',
+    'Mozambique',
+    'Namibia',
+    'Nassau',
+    'Nauru',
+    'Nepal',
+    'Netherlands',
+    'New Zealand',
+    'Nicaragua',
+    'Niger',
+    'Nigeria',
+    'North German Confederation',
+    'North German Union',
+    'North Macedonia',
+    'Norway',
+    'Oldenburg',
+    'Oman',
+    'Orange Free State',
+    'Pakistan',
+    'Palau',
+    'Panama',
+    'Papal States',
+    'Papua New Guinea',
+    'Paraguay',
+    'Peru',
+    'Philippines',
+    'Piedmont-Sardinia',
+    'Poland',
+    'Portugal',
+    'Qatar',
+    'Republic of Genoa',
+    'Republic of Korea (South Korea)',
+    'Republic of the Congo',
+    'Romania',
+    'Russia',
+    'Rwanda',
+    'Saint Kitts and Nevis',
+    'Saint Lucia',
+    'Saint Vincent and the Grenadines',
+    'Samoa',
+    'San Marino',
+    'Sao Tome and Principe',
+    'Saudi Arabia',
+    'Schaumburg-Lippe',
+    'Senegal',
+    'Serbia',
+    'Seychelles',
+    'Sierra Leone',
+    'Singapore',
+    'Slovakia',
+    'Slovenia',
+    'Solomon Islands',
+    'Somalia',
+    'South Africa',
+    'South Sudan',
+    'Spain',
+    'Sri Lanka',
+    'Sudan',
+    'Suriname',
+    'Sweden',
+    'Switzerland',
+    'Syria',
+    'Tajikistan',
+    'Tanzania',
+    'Texas',
+    'Thailand',
+    'Timor-Leste',
+    'Togo',
+    'Tonga',
+    'Trinidad and Tobago',
+    'Tunisia',
+    'Turkey',
+    'Turkmenistan',
+    'Tuvalu',
+    'Two Sicilies',
+    'Uganda',
+    'Ukraine',
+    'Union of Soviet Socialist Republics',
+    'United Arab Emirates',
+    'United Kingdom',
+    'Uruguay',
+    'Uzbekistan',
+    'Vanuatu',
+    'Venezuela',
+    'Vietnam',
+    'Württemberg',
+    'Yemen',
+    'Zambia',
+    'Zimbabwe',
+  ];
+  String _dropdownvalue = '';
+  void dropdown({String? value}) {
+    if (value is String) {
+      setState(() {
+        _dropdownvalue = value;
+      });
+    }
+  }
+
+  String selectedcountry = '*Choose a Country*';
   String email = '';
   String password = '';
   String error = '';
-  String country = '';
-  String city = '';
-  String state = '';
   bool iscompleted = false;
   bool Loading = false;
 
@@ -38,15 +272,11 @@ class _SignupState extends State<Signup> {
   Future adduserinfo({
     required String firstname,
     required String gender,
-    required String state,
-    required String city,
     required String country,
   }) async {
     await FirebaseFirestore.instance.collection('users').add({
       'firstname': firstname,
       'gender': gender,
-      'state': state,
-      'city': city,
       'country': country,
     });
   }
@@ -56,36 +286,36 @@ class _SignupState extends State<Signup> {
     return ModalProgressHUD(
       inAsyncCall: Loading,
       child: Scaffold(
-        body: SafeArea(
+        body: SingleChildScrollView(
           child: Column(
             children: [
               Padding(
-              padding: const EdgeInsets.only(top: 50, left: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  InkWell(
-                    child: Icon(Icons.arrow_back_ios),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  SizedBox(
-                    width: 130,
-                  ),
-                  Text(
-                    'Registration',
-                    style: GoogleFonts.aBeeZee(
-                        fontSize: 25, fontWeight: FontWeight.bold),
-                  ),
-                ],
+                padding: const EdgeInsets.only(top: 50, left: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      child: Icon(Icons.arrow_back_ios),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    SizedBox(
+                      width: 130,
+                    ),
+                    Text(
+                      'Registration',
+                      style: GoogleFonts.aBeeZee(
+                          fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
-            ),
               Form(
                 key: _formkey,
                 child: Theme(
-                  data:
-                      ThemeData(accentColor: Colors.red, primarySwatch: Colors.red),
+                  data: ThemeData(
+                      accentColor: Colors.red, primarySwatch: Colors.red),
                   child: Stepper(
                     type: StepperType.vertical,
                     onStepTapped: (value) {
@@ -104,7 +334,7 @@ class _SignupState extends State<Signup> {
                           setState(() {
                             iscompleted = true;
                           });
-
+    
                           showDialog(
                               context: context,
                               builder: (context) {
@@ -119,10 +349,11 @@ class _SignupState extends State<Signup> {
                                         setState(() {
                                           Loading = true;
                                         });
-                                        dynamic result = Database()
+                                        dynamic result = await Database()
                                             .signupWithEmailandPassword(
-                                                email: email, password: password);
-
+                                                email: email,
+                                                password: password);
+    
                                         if (result != null) {
                                           setState(() {
                                             Loading = false;
@@ -134,9 +365,7 @@ class _SignupState extends State<Signup> {
                                             adduserinfo(
                                                 firstname: name_controller.text,
                                                 gender: _selectedgender,
-                                                state: state,
-                                                city: city,
-                                                country: country);
+                                                country: selectedcountry);
                                           });
                                         }
                                       },
@@ -149,7 +378,7 @@ class _SignupState extends State<Signup> {
                                   ],
                                 );
                               });
-
+    
                           print('passed length');
                         } else {
                           setState(() {
@@ -274,9 +503,21 @@ class _SignupState extends State<Signup> {
           ),
         ),
         Step(
-          title: Text('Location'),
-          content: Text(''),
-        ),
+            title: Text('Location'),
+            content: DropdownButton(
+              value: selectedcountry,
+              onChanged: (value) {
+                setState(() {
+                  selectedcountry = value!;
+                });
+              },
+              items: allcount.map((e) {
+                return DropdownMenuItem(
+                  child: Text(e),
+                  value: e,
+                );
+              }).toList(),
+            )),
         Step(
           title: Text('Sex'),
           content: Container(
