@@ -12,7 +12,7 @@ import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.da
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:ionicons/ionicons.dart';
-
+import 'package:lifematch/screens/homepagetabs/accountinfo.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -30,7 +30,7 @@ class _HomepageState extends State<Homepage> {
     mainhome(),
     Likepage(),
     Chatpage(),
-    
+    Accountinfo(),
   ];
   @override
   void initState() {
@@ -84,7 +84,7 @@ class _HomepageState extends State<Homepage> {
                   iconSize: 25,
                   text: 'Likes',
                   textColor: Colors.white,
-                  iconActiveColor: Colors.white,
+                  iconActiveColor: Color(0xffBEA0FF),
                 ),
                 GButton(
                   haptic: true,
@@ -93,7 +93,7 @@ class _HomepageState extends State<Homepage> {
                   text: 'Chats',
                   textColor: Colors.white,
                   iconColor: Colors.white,
-                  iconActiveColor: Colors.white,
+                  iconActiveColor: Color(0xffBEA0FF),
                 ),
                 GButton(
                   haptic: true,
@@ -101,7 +101,7 @@ class _HomepageState extends State<Homepage> {
                   text: 'Account',
                   textColor: Colors.white,
                   iconColor:Colors.white,
-                  iconActiveColor: Colors.white,
+                  iconActiveColor: Color(0xffBEA0FF),
                 ),
               ],
             ),
