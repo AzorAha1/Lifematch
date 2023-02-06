@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
@@ -11,24 +12,50 @@ class Accountinfo extends StatefulWidget {
 }
 
 class _AccountinfoState extends State<Accountinfo> {
+  FirebaseAuth user = FirebaseAuth.instance;
   final double tophalfheight = 200;
   double imagecontainerheight = 100;
-  double imagecontainerwidth = 200;
-  
+  double imagecontainerwidth = 140;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF4F3DA),
-      body: Stack(
-        clipBehavior: Clip.none,
+      body: Column(
         children: [
-        tophalf(),
-        Positioned(
-          top: 150,
-          width: 400,
-          child: profilepicture(),
-        ),
-      ]),
+          Stack(clipBehavior: Clip.none, children: [
+            tophalf(),
+            Positioned(
+              top: 150,
+              width: 400,
+              child: profilepicture(),
+            ),
+          ]),
+          SizedBox(
+            height: 50,
+          ),
+          Text(
+            'Faisal',
+            style: GoogleFonts.aBeeZee(fontSize: 20),
+          ),
+          Text(
+            '@${user.currentUser!.email}',
+            style: GoogleFonts.aBeeZee(fontSize: 12),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            'Edit Bio',
+            style: GoogleFonts.aBeeZee(fontSize: 10),
+          ),
+          Row(
+            children: [
+              newcontainer(),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -60,17 +87,29 @@ class _AccountinfoState extends State<Accountinfo> {
     );
   }
 
-  
-
-
   Widget profilepicture() {
-    return Container(
-      width: imagecontainerwidth,
-      height: imagecontainerheight,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        image: DecorationImage(
-            image: AssetImage(''),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(120, 0, 120, 0),
+      child: Container(
+        width: imagecontainerwidth,
+        height: imagecontainerheight,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            image: DecorationImage(image: AssetImage('images/mando.jpg'))),
+      ),
+    );
+  }
+}
+
+class newcontainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(20)
         ),
       ),
     );
