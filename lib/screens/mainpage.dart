@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:switcher/core/switcher_size.dart';
@@ -10,6 +11,9 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
+  @override
+  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -86,7 +90,7 @@ class newbutton extends StatelessWidget {
   double? height;
   double? width;
 
-  newbutton({this.text, required this.onpress, this.height,this.width});
+  newbutton({required this.text, required this.onpress, this.height, this.width});
 
   @override
   Widget build(BuildContext context) {

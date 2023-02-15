@@ -18,10 +18,9 @@ class _SigninState extends State<Signin> {
   String email = '';
   String password = '';
   String error = '';
-  final signin = Database();
   bool Loading = false;
   final _formkey = GlobalKey<FormState>();
-
+  final currentuser = FirebaseAuth.instance.currentUser?.uid;
   
 
   TextEditingController email_controller = TextEditingController();
@@ -122,7 +121,7 @@ class _SigninState extends State<Signin> {
                               Loading = true;
                             });
                             dynamic result =
-                                await signin.signinWithEmailandPassword(
+                                await Database(uid: currentuser!).signinWithEmailandPassword(
                                     email: email, password: password);
                             if (result != null) {
                               setState(() {
@@ -196,7 +195,7 @@ class _SigninState extends State<Signin> {
                               Loading = true;
                             });
         
-                            dynamic result = await Database()
+                            dynamic result = await Database(uid:currentuser!)
                                 .Signinwithgoogle()
                                 .onError((error, stackTrace) {
                               print('this is the error - $error');
@@ -221,7 +220,7 @@ class _SigninState extends State<Signin> {
                               Loading = true;
                             });
         
-                            dynamic result = await signin.signinAnon();
+                            dynamic result = await Database(uid:currentuser).signinAnon();
         
                             if (result == null) {
                               print(null);

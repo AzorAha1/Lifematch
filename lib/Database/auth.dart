@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 final GoogleSignIn _googlesignin = GoogleSignIn(scopes: ['email']);
 
 final _auth = FirebaseAuth.instance;
-//final currentuser = Fire
+final currentuid = FirebaseAuth.instance.currentUser?.uid;
 
 class Database {
+  String? uid;
+  Database({this.uid});
   Future signinAnon() async {
     try {
       UserCredential result = await _auth.signInAnonymously();
@@ -16,6 +20,24 @@ class Database {
       print(e.toString());
       return null;
     }
+  }
+
+  Future adduserinfo({
+    required String firstname,
+    required String gender,
+    required String country,
+    required String bio,
+    required String uid,
+  }) async {
+    final DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('users').doc(currentuid);
+    await documentReference.set({
+      'firstname': firstname,
+      'gender': gender,
+      'country': country,
+      'bio': bio,
+      'uid': currentuid
+    });
   }
 
   Future signinWithEmailandPassword(
@@ -54,5 +76,9 @@ class Database {
       idToken: googleSignInAuthentication.idToken,
     );
     return await _auth.signInWithCredential(authProvider);
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> newbuilder() {
+    return FirebaseFirestore.instance.collection('users').snapshots();
   }
 }

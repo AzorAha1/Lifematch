@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:lifematch/Database/auth.dart';
 import 'package:line_icons/line_icon.dart';
 
 class Accountinfo extends StatefulWidget {
@@ -12,51 +14,105 @@ class Accountinfo extends StatefulWidget {
 }
 
 class _AccountinfoState extends State<Accountinfo> {
-  FirebaseAuth user = FirebaseAuth.instance;
+  FirebaseAuth userdata = FirebaseAuth.instance;
+  final currentuser = FirebaseAuth.instance.currentUser?.uid;
+
   final double tophalfheight = 200;
   double imagecontainerheight = 100;
   double imagecontainerwidth = 140;
+  String likes = '0';
+  String matches = '0';
+  String dates = '0';
+  String b = 'Loading...';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xffF4F3DA),
-      body: Column(
-        children: [
-          Stack(clipBehavior: Clip.none, children: [
-            tophalf(),
-            Positioned(
-              top: 150,
-              width: 400,
-              child: profilepicture(),
-            ),
-          ]),
-          SizedBox(
-            height: 50,
-          ),
-          Text(
-            'Faisal',
-            style: GoogleFonts.aBeeZee(fontSize: 20),
-          ),
-          Text(
-            '@${user.currentUser!.email}',
-            style: GoogleFonts.aBeeZee(fontSize: 12),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            'Edit Bio',
-            style: GoogleFonts.aBeeZee(fontSize: 10),
-          ),
-          Row(
-            children: [
-              newcontainer(),
-            ],
-          ),
-        ],
-      ),
-    );
+    return StreamBuilder<User?>(
+        initialData: null,
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          User? user = snapshot.data;
+          return StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user?.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                b = snapshot.data!.get('bio');
+                return Scaffold(
+                  backgroundColor: Color(0xffF4F3DA),
+                  body: Column(
+                    children: [
+                      Stack(clipBehavior: Clip.none, children: [
+                        tophalf(),
+                        Positioned(
+                          top: 150,
+                          width: 400,
+                          child: profilepicture(),
+                        ),
+                      ]),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Text(
+                        'Faisal',
+                        style: GoogleFonts.aBeeZee(fontSize: 20),
+                      ),
+                      Text(
+                        '@${userdata.currentUser?.email}',
+                        style: GoogleFonts.aBeeZee(fontSize: 12),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        b,
+                        style: GoogleFonts.aBeeZee(fontSize: 10),
+                      ),
+                      Row(
+                        children: [
+                          newcontainer(
+                            text: Text(
+                              likes,
+                              style: TextStyle(fontSize: 35),
+                            ),
+                            subtitle: Text(
+                              'Likes You',
+                              style:
+                                  GoogleFonts.aBeeZee(color: Color(0xffD9DBDB)),
+                            ),
+                          ),
+                          newcontainer(
+                            text: Text(
+                              matches,
+                              style: TextStyle(fontSize: 35),
+                            ),
+                            subtitle: Text('Matches',
+                                style: GoogleFonts.aBeeZee(
+                                    color: Color(0xffD9DBDB))),
+                          ),
+                          newcontainer(
+                            text: Text(
+                              dates,
+                              style: TextStyle(fontSize: 35),
+                            ),
+                            subtitle: Text('Dates',
+                                style: GoogleFonts.aBeeZee(
+                                    color: Color(0xffD9DBDB))),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              });
+        });
   }
 
   Widget tophalf() {
@@ -79,7 +135,43 @@ class _AccountinfoState extends State<Accountinfo> {
           ),
           boxbutton(
             color: Color(0xffF8E006),
-            onpress: () {},
+            onpress: () {
+              showBottomSheet(
+                  clipBehavior: Clip.none,
+                  context: context,
+                  builder: (context) {
+                    return Container(
+                      height: 500,
+                      width: 500,
+                      decoration: const BoxDecoration(
+                        color: Color(0xffBEA0FF),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children:  [
+                          SizedBox(
+                            height: 30,
+                          ),
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundImage: AssetImage('images/mando.jpg'),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          InkWell(
+                            onTap: () {},
+                            child: Text('Change profile picture',style: GoogleFonts.aBeeZee(color: Colors.blue),),
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+            },
             icon: LineIcon.userEdit(),
           ),
         ],
@@ -101,15 +193,34 @@ class _AccountinfoState extends State<Accountinfo> {
   }
 }
 
-class newcontainer extends StatelessWidget {
+class newcontainer extends StatefulWidget {
+  Widget text;
+  Widget subtitle;
+  newcontainer({required this.subtitle, required this.text});
+  @override
+  State<newcontainer> createState() => _newcontainerState();
+}
+
+class _newcontainerState extends State<newcontainer> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(22.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(20)
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: MaterialButton(
+          child: Column(
+            children: [widget.text, widget.subtitle],
+          ),
+          height: 55,
+          color: Color(0xffFFFFFF),
+          elevation: 8,
+          onPressed: () {
+            print('pressed');
+          },
         ),
       ),
     );
