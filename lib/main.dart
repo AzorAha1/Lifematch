@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:lifematch/screens/Registration/interests.dart';
+import 'package:lifematch/screens/Registration/picturesandbios.dart';
+import 'package:lifematch/screens/Registration/preference.dart';
 import 'package:lifematch/screens/Signin.dart';
 import 'package:lifematch/screens/Registration/Signup.dart';
 import 'package:lifematch/screens/forgotpassword.dart';
@@ -37,6 +40,9 @@ class _MyAppState extends State<MyApp> {
         '/signup': (context) => Signup(),
         '/home': (context) => Homepage(),
         '/forgotpassword': (context) => Forgotpassword(),
+        '/picturesandbios':(context) => Picturesandbios(),
+        '/preferences':(context) => Preferences(),
+        '/interests':(context) => Interests(),
       },
     );
   }

@@ -253,14 +253,17 @@ class _SignupState extends State<Signup> {
     }
   }
 
+  DateTime? _currentdate = DateTime.now();
   String selectedcountry = '*Choose a Country*';
   String email = '';
   String password = '';
+  String dateofbirth = '';
   String error = '';
   bool iscompleted = false;
   bool Loading = false;
   String bio = '';
   String _selectedgender = 'empty';
+  TextEditingController dob_controller = TextEditingController();
   TextEditingController email_controller = TextEditingController();
   TextEditingController password_controller = TextEditingController();
   final age_controller = TextEditingController();
@@ -298,24 +301,225 @@ class _SignupState extends State<Signup> {
               Form(
                 key: _formkey,
                 child: Theme(
-                  data:
-                      ThemeData(accentColor: Colors.red, primarySwatch: Colors.red),
+                  data: ThemeData(
+                      accentColor: Colors.red, primarySwatch: Colors.red),
                   child: Expanded(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 2,left:20 ),
+                              padding: const EdgeInsets.only(top: 2, left: 20),
                               child: InkWell(
-                                child:Icon(Icons.arrow_back_ios) ,
+                                child: Icon(Icons.arrow_back_ios),
                               ),
                             ),
-                            SizedBox(width: 150,height: 50,),
-                            Text('Step 1 of 4',style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w900),),
+                            SizedBox(
+                              width: 150,
+                              height: 50,
+                            ),
+                            Text(
+                              'Step 1 of 4',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ],
                         ),
+                        Text(_currentdate.toString()),
+                        SizedBox(
+                          height: 60,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Text(
+                            'Profile info',
+                            style: GoogleFonts.aBeeZee(fontSize: 30),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 20, left: 20, bottom: 40),
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Empty Field';
+                              }
+                            },
+                            controller: email_controller,
+                            onChanged: (value) {
+                              setState(() {
+                                email = value;
+                              });
+                            },
+                            decoration: ktextformfield.copyWith(
+                                hintText: 'Username or Email',
+                                hintStyle: GoogleFonts.aBeeZee()),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 20, left: 20, bottom: 40),
+                          child: Stack(
+                            children: [
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Empty Field';
+                                  }
+                                },
+                                controller: dob_controller,
+                                onChanged: (value) {
+                                  setState(() {
+                                    dateofbirth = value;
+                                  });
+                                },
+                                decoration: ktextformfield.copyWith(
+                                    hintText: 'Date of Birth',
+                                    hintStyle: GoogleFonts.aBeeZee()),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 320, top: 15),
+                                child: InkWell(
+                                  onTap: () {
+                                    showdaytime().then((value) {
+                                      setState(() {
+                                        _currentdate = value;
+                                        dob_controller.text =
+                                            value.toString().substring(0, 10);
+                                      });
+                                    });
+                                  },
+                                  child: Icon(Icons.calendar_month_outlined),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 20,
+                            left: 20,
+                          ),
+                          child: Stack(children: [
+                            TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Empty Field';
+                                }
+                              },
+                              controller: gender_controller,
+                              onChanged: (value) {
+                                setState(() {
+                                  email = value;
+                                });
+                              },
+                              decoration: ktextformfield.copyWith(
+                                  hintText: 'Gender',
+                                  hintStyle: GoogleFonts.aBeeZee()),
+                            ),
+                            SizedBox(height: 100,),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 270),
+                              child: DropdownButton<String>(
+                                value: _selectedgender,
+                                items: [
+                                  DropdownMenuItem(
+                                    child: Text(
+                                      '*Empty*',
+                                      style: GoogleFonts.aBeeZee(fontSize: 15),
+                                    ),
+                                    value: 'empty',
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text(
+                                      'Male',
+                                      style: GoogleFonts.aBeeZee(fontSize: 15),
+                                    ),
+                                    value: 'male',
+                                  ),
+                                  DropdownMenuItem(
+                                    child: Text(
+                                      'Female',
+                                      style: GoogleFonts.aBeeZee(fontSize: 15),
+                                    ),
+                                    value: 'female',
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedgender = value!;
+                                    gender_controller.text =
+                                        value.toString().toUpperCase();
+                                  });
+                                },
+                              ),
+                            ),
+                          ]),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 20,
+                            left: 20,
+                            
+                          ),
+                          child: Stack(children: [
+                            TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Empty Field';
+                                }
+                              },
+                              controller: gender_controller,
+                              onChanged: (value) {
+                                setState(() {
+                                  email = value;
+                                });
+                              },
+                              decoration: ktextformfield.copyWith(
+                                  hintText: 'Location',
+                                  hintStyle: GoogleFonts.aBeeZee()),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 50,right: 50),
+                              child: DropdownButton<String>(
+                                
+                                value: selectedcountry,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedcountry = value!;
+                                  });
+                                },
+                                items: allcount.map((e) {
+                                  return DropdownMenuItem(
+                                    child: Text(e),
+                                    value: e,
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ]),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        newbutton(
+                            text: Text('Next',
+                                style: GoogleFonts.aBeeZee(
+                                    color: Color.fromARGB(255, 228, 225, 225))),
+                            onpress: () {
+                              if (_formkey.currentState!.validate()) {
+                                Navigator.pushNamed(
+                                    context, '/picturesandbios');
+                                print(_currentdate.toString());
+                                print(email);
+                                print(_selectedgender);
+                              }
+                            })
                       ],
                     ),
                   ),
@@ -328,7 +532,15 @@ class _SignupState extends State<Signup> {
     );
   }
 
- 
+  Future<dynamic> showdaytime() {
+    return showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.utc(1980),
+        lastDate: DateTime.utc(2025));
+  }
+
+  
 
   // List<Step> getsteps() => [
   //       Step(

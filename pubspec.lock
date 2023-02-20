@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  calender_picker:
+    dependency: "direct main"
+    description:
+      name: calender_picker
+      sha256: "1bcd91afb52871dfbe0fd1a32a681a54d4f3a6106691b5ff17cab181dd8d8b35"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.7"
   characters:
     dependency: transitive
     description:

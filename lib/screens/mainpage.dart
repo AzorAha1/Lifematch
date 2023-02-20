@@ -85,7 +85,7 @@ class _MainpageState extends State<Mainpage> {
 }
 
 class newbutton extends StatelessWidget {
-  Text? text;
+  Widget? text;
   Function()? onpress;
   double? height;
   double? width;
