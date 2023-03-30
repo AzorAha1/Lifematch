@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lifematch/constants.dart';
+import 'package:lifematch/main.dart';
 import 'package:lifematch/screens/mainpage.dart';
 
 class Forgotpassword extends StatefulWidget {
@@ -52,7 +53,7 @@ class _ForgotpasswordState extends State<Forgotpassword> {
                 InkWell(
                     child: Icon(Icons.arrow_back_ios),
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/signin');
+                      Navigator.pushReplacementNamed(context, Routes.signin.name);
                     },
                   ),
                    SizedBox(

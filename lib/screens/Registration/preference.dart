@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifematch/main.dart';
 import 'package:lifematch/screens/mainpage.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 const activeColor = Color.fromARGB(255, 237, 69, 69);
 const inactiveColor = Color.fromARGB(255, 173, 173, 173);
+RangeValues rangeValues = RangeValues(18, 99);
 
 class Preferences extends StatefulWidget {
   const Preferences({Key? key}) : super(key: key);
@@ -14,12 +18,15 @@ class Preferences extends StatefulWidget {
 }
 
 class _PreferencesState extends State<Preferences> {
+  Map data = {};
   bool Loading = false;
   String selectedsex = '';
   Color mancardColor = inactiveColor;
   Color womancardColor = inactiveColor;
   int age = 0;
-  RangeValues rangeValues = RangeValues(18, 99);
+
+  dynamic min = rangeValues.start;
+  dynamic max = rangeValues.end;
 
   void update({int? sex}) {
     if (sex == 1) {
@@ -49,6 +56,18 @@ class _PreferencesState extends State<Preferences> {
 
   @override
   Widget build(BuildContext context) {
+    data = ModalRoute.of(context)?.settings.arguments as Map;
+    String location = data['location'];
+    String dateofbirth = data['dob'];
+    String gender = data['gender'];
+    String bio = data['bio'];
+    File? img1 = data['img1'];
+    File? img2 = data['img2'];
+    File? img3 = data['img3'];
+    File? img4 = data['img4'];
+    File? img5 = data['img5'];
+    File? img6 = data['img6'];
+
     return SafeArea(
       child: ModalProgressHUD(
         progressIndicator: CircularProgressIndicator(
@@ -73,7 +92,7 @@ class _PreferencesState extends State<Preferences> {
                     width: 120,
                   ),
                   Text(
-                    'Step 3 of 4',
+                    'Step 3 of 5',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -152,16 +171,30 @@ class _PreferencesState extends State<Preferences> {
               newbutton(
                   text: Text('Next'),
                   onpress: () async {
-                     setState(() {
+                    setState(() {
                       Loading = true;
                     });
                     print(selectedsex);
                     print(
-                        "${rangeValues.start.round().toString()} is the min age i'm dating\n ${rangeValues.end.round().toString()} is the max age i'm dating");
-                    await Future.delayed(Duration(seconds: 2), (){
-                       Navigator.pushNamed(context, '/interests');
+                        "${min.round().toString()} is the min age i'm dating\n ${max.round().toString()} is the max age i'm dating");
+                    await Future.delayed(Duration(seconds: 2), () {
+                      Navigator.pushNamed(context, Routes.interests.name, arguments: {
+                        'location': location,
+                        'dob': dateofbirth,
+                        'gender': gender,
+                        'interest': selectedsex,
+                        'bio': bio,
+                        'minimumage': min.toString(),
+                        'maximumage': max.toString(),
+                        'img1': img1,
+                        'img2': img2,
+                        'img3': img3,
+                        'img4': img4,
+                        'img5': img5,
+                        'img6': img6,
+                      });
                     });
-                   
+
                     setState(() {
                       Loading = false;
                     });

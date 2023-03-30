@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifematch/main.dart';
 import 'package:switcher/core/switcher_size.dart';
 import 'package:switcher/switcher.dart';
 
@@ -66,13 +67,13 @@ class _MainpageState extends State<Mainpage> {
                 newbutton(
                   text: Text('Sign In'),
                   onpress: () {
-                    Navigator.pushNamed(context, '/signin');
+                    Navigator.pushNamed(context, Routes.signin.name);
                   },
                 ),
                 newbutton(
                   text: Text('Sign Up'),
                   onpress: () {
-                    Navigator.pushNamed(context, '/signup');
+                    Navigator.pushNamed(context, Routes.signup.name);
                   },
                 ),
               ],

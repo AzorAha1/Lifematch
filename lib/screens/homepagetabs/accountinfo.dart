@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +26,15 @@ class _AccountinfoState extends State<Accountinfo> {
   String matches = '0';
   String dates = '0';
   String b = 'Loading...';
+  String firstname = '';
+
+  File nullimage = File('images/account.png');
+  File? profilepic;
+  List<dynamic> hobbies = [];
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.currentUser;
     return StreamBuilder<User?>(
         initialData: null,
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -44,7 +52,12 @@ class _AccountinfoState extends State<Accountinfo> {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                b = snapshot.data!.get('bio');
+                b = snapshot.data!.get('bio') ?? 'No bio yet';
+                hobbies = snapshot.data!.get('hobbies');
+                String? newimage =
+                    snapshot.data!.get('image 1') ?? 'Not available';
+                firstname = snapshot.data!.get('firstname');
+                profilepic = File(newimage!);
                 return Scaffold(
                   backgroundColor: Color(0xffF4F3DA),
                   body: Column(
@@ -61,7 +74,7 @@ class _AccountinfoState extends State<Accountinfo> {
                         height: 50,
                       ),
                       Text(
-                        'Faisal',
+                        '$firstname',
                         style: GoogleFonts.aBeeZee(fontSize: 20),
                       ),
                       Text(
@@ -73,7 +86,7 @@ class _AccountinfoState extends State<Accountinfo> {
                       ),
                       Text(
                         b,
-                        style: GoogleFonts.aBeeZee(fontSize: 10),
+                        style: GoogleFonts.aBeeZee(fontSize: 15),
                       ),
                       Row(
                         children: [
@@ -152,21 +165,34 @@ class _AccountinfoState extends State<Accountinfo> {
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children:  [
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(12)),
+                            height: 9,
+                            width: 70,
+                          ),
                           SizedBox(
                             height: 30,
                           ),
                           CircleAvatar(
                             radius: 50,
-                            backgroundImage: AssetImage('images/mando.jpg'),
+                            backgroundImage: profilepic == null
+                                ? FileImage(nullimage)
+                                : FileImage(profilepic!),
                           ),
                           SizedBox(
                             height: 10,
                           ),
                           InkWell(
                             onTap: () {},
-                            child: Text('Change profile picture',style: GoogleFonts.aBeeZee(color: Colors.blue),),
+                            child: Text(
+                              'Change profile picture',
+                              style: GoogleFonts.aBeeZee(color: Colors.blue),
+                            ),
                           ),
+                          Text('$hobbies')
                         ],
                       ),
                     );
@@ -186,8 +212,9 @@ class _AccountinfoState extends State<Accountinfo> {
         width: imagecontainerwidth,
         height: imagecontainerheight,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            image: DecorationImage(image: AssetImage('images/mando.jpg'))),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Image.file(profilepic!),
       ),
     );
   }

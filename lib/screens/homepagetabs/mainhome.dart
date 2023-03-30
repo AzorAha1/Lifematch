@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lifematch/main.dart';
 import 'package:lifematch/screens/mainpage.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -83,7 +84,7 @@ class _mainhomeState extends State<mainhome> {
                                       await _auth.signOut();
 
                                       Navigator.pushReplacementNamed(
-                                          context, '/signin');
+                                          context, Routes.signin.name);
                                       setState(() {
                                         Loading = false;
                                       });

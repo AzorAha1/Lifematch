@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +25,22 @@ class Database {
   }
 
   Future adduserinfo({
-    required String firstname,
-    required String gender,
-    required String country,
-    required String bio,
-    required String uid,
+    String? firstname,
+    String? gender,
+    String? country,
+    String? bio,
+    String? uid,
+    String? dateofbirth,
+    String? preference,
+    List? hobbies,
+    String? minimumage,
+    String? maximumage,
+    File? img1,
+    File? img2,
+    File? img3,
+    File? img4,
+    File? img5,
+    File? img6,
   }) async {
     final DocumentReference documentReference =
         FirebaseFirestore.instance.collection('users').doc(currentuid);
@@ -36,7 +49,18 @@ class Database {
       'gender': gender,
       'country': country,
       'bio': bio,
-      'uid': currentuid
+      'uid': currentuid,
+      'date of birth': dateofbirth,
+      'preference': preference,
+      'hobbies': hobbies,
+      'The min age you would date is ': minimumage,
+      'The max age you would date is ': maximumage,
+      'image 1': img1?.path,
+      'image 2': img2?.path,
+      'image 3': img3?.path,
+      'image 4': img4?.path,
+      'image 5': img5?.path,
+      'image 6': img6?.path,
     });
   }
 
