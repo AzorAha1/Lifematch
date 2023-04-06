@@ -14,6 +14,8 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:lifematch/screens/homepagetabs/accountinfo.dart';
 
+import 'homepagetabs/newaccountinfo.dart';
+
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
 
@@ -30,7 +32,8 @@ class _HomepageState extends State<Homepage> {
     mainhome(),
     Likepage(),
     Chatpage(),
-    Accountinfo(),
+    NewAccountinfo(),
+    
   ];
   @override
   void initState() {

@@ -178,6 +178,7 @@ class _SignupState extends State<Signup> {
     'Orange Free State',
     'Pakistan',
     'Palau',
+    'Palastine',
     'Panama',
     'Papal States',
     'Papua New Guinea',

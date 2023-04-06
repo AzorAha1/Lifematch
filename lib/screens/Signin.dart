@@ -22,7 +22,14 @@ class _SigninState extends State<Signin> {
   bool Loading = false;
   final _formkey = GlobalKey<FormState>();
   final currentuser = FirebaseAuth.instance.currentUser?.uid;
-  
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    email_controller.dispose();
+    password_controller.dispose();
+  }
 
   TextEditingController email_controller = TextEditingController();
   TextEditingController password_controller = TextEditingController();
@@ -97,7 +104,7 @@ class _SigninState extends State<Signin> {
                               hintStyle: GoogleFonts.aBeeZee()),
                         ),
                       ),
-          
+
                       Padding(
                         padding: const EdgeInsets.only(left: 250),
                         child: InkWell(
@@ -113,7 +120,8 @@ class _SigninState extends State<Signin> {
                         height: 20,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 150, bottom: 20.0),
+                        padding:
+                            const EdgeInsets.only(right: 150, bottom: 20.0),
                         child: newbutton(
                           onpress: () async {
                             print(email);
@@ -122,14 +130,15 @@ class _SigninState extends State<Signin> {
                               setState(() {
                                 Loading = true;
                               });
-                              dynamic result =
-                                  await Database(uid: currentuser!).signinWithEmailandPassword(
+                              dynamic result = await Database(uid: currentuser!)
+                                  .signinWithEmailandPassword(
                                       email: email, password: password);
                               if (result != null) {
                                 setState(() {
                                   Loading = false;
-                                  Navigator.pushNamed(context, Routes.home.name);
-                                  
+                                  Navigator.pushNamed(
+                                      context, Routes.home.name);
+
                                   print('logged in');
                                 });
                                 email_controller.clear();
@@ -146,7 +155,7 @@ class _SigninState extends State<Signin> {
                           text: Text('Log in'),
                         ),
                       ),
-          
+
                       SizedBox(
                         height: 40,
                       ),
@@ -159,7 +168,7 @@ class _SigninState extends State<Signin> {
                       //     Navigator.pushNamed(context, '/signup');
                       //   },
                       // ),
-          
+
                       Row(
                         children: [
                           Expanded(
@@ -196,14 +205,15 @@ class _SigninState extends State<Signin> {
                               setState(() {
                                 Loading = true;
                               });
-          
-                              dynamic result = await Database(uid:currentuser!)
+
+                              dynamic result = await Database(uid: currentuser!)
                                   .Signinwithgoogle()
                                   .onError((error, stackTrace) {
                                 print('this is the error - $error');
                               });
                               if (result != null) {
-                                Navigator.pushReplacementNamed(context, Routes.home.name);
+                                Navigator.pushReplacementNamed(
+                                    context, Routes.home.name);
                               } else {
                                 Navigator.pop(context);
                                 setState(() {
@@ -221,13 +231,15 @@ class _SigninState extends State<Signin> {
                               setState(() {
                                 Loading = true;
                               });
-          
-                              dynamic result = await Database(uid:currentuser).signinAnon();
-          
+
+                              dynamic result =
+                                  await Database(uid: currentuser).signinAnon();
+
                               if (result == null) {
                                 print(null);
                               } else {
-                                Navigator.pushReplacementNamed(context, Routes.home.name);
+                                Navigator.pushReplacementNamed(
+                                    context, Routes.home.name);
                                 setState(() {
                                   Loading = false;
                                 });
@@ -251,7 +263,8 @@ class _SigninState extends State<Signin> {
                       style: GoogleFonts.aBeeZee(),
                     ),
                     InkWell(
-                      onTap: () => Navigator.pushNamed(context, Routes.signup.name),
+                      onTap: () =>
+                          Navigator.pushNamed(context, Routes.signup.name),
                       child: Text(
                         'Register now',
                         style: GoogleFonts.aBeeZee(color: Colors.red),
