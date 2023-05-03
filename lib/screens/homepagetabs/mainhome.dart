@@ -32,13 +32,15 @@ class _mainhomeState extends State<mainhome> {
 
   @override
   Widget build(BuildContext context) {
+    final Screenwidth = MediaQuery.of(context).size.width;
+    final Screenheight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: ModalProgressHUD(
         inAsyncCall: Loading,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20, left: 20),
+              padding: EdgeInsets.only(top: Screenheight * 0.02, left: Screenwidth * 0.04),
               child: Row(
                 //mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -46,19 +48,19 @@ class _mainhomeState extends State<mainhome> {
                     child: Icon(Icons.arrow_back_ios),
                   ),
                   SizedBox(
-                    width: 90,
+                    width: Screenwidth * 0.2,
                   ),
                   Text(
                     'LifeMatch',
                     style: GoogleFonts.aBeeZee(
-                        fontSize: 25, fontWeight: FontWeight.bold),
+                        fontSize: Screenheight * 0.03, fontWeight: FontWeight.bold),
                   ),
                   Image.asset(
                     'images/background.png',
-                    width: 30,
+                    width: Screenwidth * 0.08,
                   ),
                   SizedBox(
-                    width: 30,
+                    width: Screenwidth * 0.08,
                   ),
                   GestureDetector(
                     onTap: () => print(user?.emailVerified),
@@ -70,7 +72,7 @@ class _mainhomeState extends State<mainhome> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 20),
+                  SizedBox(width: Screenwidth * 0.05),
                   InkWell(
                     onTap: () async {
                       showDialog(
@@ -114,13 +116,13 @@ class _mainhomeState extends State<mainhome> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20),
+              padding: EdgeInsets.only(right: Screenheight * 0.025),
               child: Center(
                 child: Text(user?.email ?? 'not signed in'),
               ),
             ),
             SizedBox(
-              height: 20,
+              height: Screenheight * 0.02,
             ),
           ],
         ),

@@ -21,7 +21,8 @@ class _SigninState extends State<Signin> {
   String error = '';
   bool Loading = false;
   final _formkey = GlobalKey<FormState>();
-  final currentuser = FirebaseAuth.instance.currentUser?.uid;
+  final currentuseruid = FirebaseAuth.instance.currentUser?.uid;
+  final currentuser = FirebaseAuth.instance.currentUser;
 
   @override
   void dispose() {
@@ -31,256 +32,266 @@ class _SigninState extends State<Signin> {
     password_controller.dispose();
   }
 
+  @override
+  void initState() {
+    print(currentuser);
+    super.initState();
+  }
+
   TextEditingController email_controller = TextEditingController();
   TextEditingController password_controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Scaffold(
-        body: ModalProgressHUD(
-          progressIndicator: CircularProgressIndicator(color: Colors.red),
-          inAsyncCall: Loading,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 50, left: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        child: Icon(Icons.arrow_back_ios),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      SizedBox(
-                        width: 130,
-                      ),
-                      Text(
-                        'Sign In',
-                        style: GoogleFonts.aBeeZee(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Form(
-                  key: _formkey,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Empty Field';
-                            }
-                          },
-                          controller: email_controller,
-                          onChanged: (value) => email = value,
-                          decoration: ktextformfield.copyWith(
-                              hintText: 'Username or Email',
-                              hintStyle: GoogleFonts.aBeeZee()),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value!.length < 6) {
-                              return 'Password has to be 6+ chars';
-                            }
-                          },
-                          controller: password_controller,
-                          obscureText: true,
-                          onChanged: (value) => password = value,
-                          decoration: ktextformfield.copyWith(
-                              hintText: 'Password',
-                              hintStyle: GoogleFonts.aBeeZee()),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 250),
-                        child: InkWell(
-                          onTap: () => Navigator.pushReplacementNamed(
-                              context, '/forgotpassword'),
-                          child: Text(
-                            'Forgot Password ?',
-                            style: GoogleFonts.aBeeZee(color: Colors.red),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(right: 150, bottom: 20.0),
-                        child: newbutton(
-                          onpress: () async {
-                            print(email);
-                            print(password);
-                            if (_formkey.currentState!.validate()) {
-                              setState(() {
-                                Loading = true;
-                              });
-                              dynamic result = await Database(uid: currentuser!)
-                                  .signinWithEmailandPassword(
-                                      email: email, password: password);
-                              if (result != null) {
-                                setState(() {
-                                  Loading = false;
-                                  Navigator.pushNamed(
-                                      context, Routes.home.name);
-
-                                  print('logged in');
-                                });
-                                email_controller.clear();
-                                password_controller.clear();
-                              } else {
-                                setState(() {
-                                  Loading = false;
-                                  error =
-                                      'Invalid Login Credentials\n             Try Again!';
-                                });
-                              }
-                            }
-                          },
-                          text: Text('Log in'),
-                        ),
-                      ),
-
-                      SizedBox(
-                        height: 40,
-                      ),
-                      // InkWell(
-                      //   child: Text(
-                      //     'Click to Sign up here',
-                      //     style: GoogleFonts.aBeeZee(color: Colors.red),
-                      //   ),
-                      //   onTap: () {
-                      //     Navigator.pushNamed(context, '/signup');
-                      //   },
-                      // ),
-
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              indent: 20,
-                              endIndent: 20,
-                              thickness: 1,
-                            ),
-                          ),
-                          Text(
-                            'Or Continue with',
-                            style: GoogleFonts.aBeeZee(
-                                color: Color.fromARGB(221, 193, 181, 181)),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              indent: 20,
-                              endIndent: 20,
-                              thickness: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          imagecontain(
-                            imagepath: 'images/googleimage.png',
-                            onpress: () async {
-                              setState(() {
-                                Loading = true;
-                              });
-
-                              dynamic result = await Database(uid: currentuser!)
-                                  .Signinwithgoogle()
-                                  .onError((error, stackTrace) {
-                                print('this is the error - $error');
-                              });
-                              if (result != null) {
-                                Navigator.pushReplacementNamed(
-                                    context, Routes.home.name);
-                              } else {
-                                Navigator.pop(context);
-                                setState(() {
-                                  Loading = false;
-                                });
-                              }
-                            },
-                          ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          imagecontain(
-                            imagepath: 'images/anonymous.png',
-                            onpress: () async {
-                              setState(() {
-                                Loading = true;
-                              });
-
-                              dynamic result =
-                                  await Database(uid: currentuser).signinAnon();
-
-                              if (result == null) {
-                                print(null);
-                              } else {
-                                Navigator.pushReplacementNamed(
-                                    context, Routes.home.name);
-                                setState(() {
-                                  Loading = false;
-                                });
-                                print(FirebaseAuth.instance.currentUser);
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      body: ModalProgressHUD(
+        progressIndicator: CircularProgressIndicator(color: Colors.red),
+        inAsyncCall: Loading,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: screenheight * 0.07, left: screenWidth * 0.04),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      'Not a member yet ? ',
-                      style: GoogleFonts.aBeeZee(),
-                    ),
                     InkWell(
-                      onTap: () =>
-                          Navigator.pushNamed(context, Routes.signup.name),
-                      child: Text(
-                        'Register now',
-                        style: GoogleFonts.aBeeZee(color: Colors.red),
-                      ),
+                      child: Icon(Icons.arrow_back_ios),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    SizedBox(
+                      width: 130,
+                    ),
+                    Text(
+                      'Sign In',
+                      style: GoogleFonts.aBeeZee(
+                          fontSize: screenWidth * 0.06,
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 80,
+              ),
+              SizedBox(
+                height: screenheight * 0.05,
+              ),
+              Form(
+                key: _formkey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(screenWidth * 0.03),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Empty Field';
+                          }
+                        },
+                        controller: email_controller,
+                        onChanged: (value) => email = value,
+                        decoration: ktextformfield.copyWith(
+                            hintText: 'Username or Email',
+                            hintStyle: GoogleFonts.aBeeZee()),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(screenWidth * 0.03),
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value!.length < 6) {
+                            return 'Password has to be 6+ chars';
+                          }
+                        },
+                        controller: password_controller,
+                        obscureText: true,
+                        onChanged: (value) => password = value,
+                        decoration: ktextformfield.copyWith(
+                            hintText: 'Password',
+                            hintStyle: GoogleFonts.aBeeZee()),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.only(left: screenWidth * 0.6),
+                      child: InkWell(
+                        onTap: () => Navigator.pushReplacementNamed(
+                            context, Routes.forgetpassword.name),
+                        child: Text(
+                          'Forgot Password ?',
+                          style: GoogleFonts.aBeeZee(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          right: screenWidth * 0.35,
+                          bottom: screenheight * 0.02),
+                      child: newbutton(
+                        onpress: () async {
+                          print(email);
+                          print(password);
+                          if (_formkey.currentState!.validate()) {
+                            setState(() {
+                              Loading = true;
+                            });
+                            dynamic result =
+                                await Database(uid: currentuseruid!)
+                                    .signinWithEmailandPassword(
+                                        email: email, password: password);
+                            if (result != null) {
+                              setState(() {
+                                Loading = false;
+                                Navigator.pushNamed(context, Routes.home.name);
+
+                                print('logged in');
+                              });
+                              email_controller.clear();
+                              password_controller.clear();
+                            } else {
+                              setState(() {
+                                Loading = false;
+                                error =
+                                    'Invalid Login Credentials\n             Try Again!';
+                              });
+                            }
+                          }
+                        },
+                        text: Text('Log in'),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: screenheight * 0.04,
+                    ),
+                    // InkWell(
+                    //   child: Text(
+                    //     'Click to Sign up here',
+                    //     style: GoogleFonts.aBeeZee(color: Colors.red),
+                    //   ),
+                    //   onTap: () {
+                    //     Navigator.pushNamed(context, '/signup');
+                    //   },
+                    // ),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            indent: screenWidth * 0.02,
+                            endIndent: screenWidth * 0.02,
+                            thickness: 1,
+                          ),
+                        ),
+                        Text(
+                          'Or Continue with',
+                          style: GoogleFonts.aBeeZee(
+                              color: Color.fromARGB(221, 193, 181, 181)),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            indent: screenWidth * 0.02,
+                            endIndent: screenWidth * 0.02,
+                            thickness: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: screenheight * 0.07,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        imagecontain(
+                          imagepath: 'images/googleimage.png',
+                          onpress: () async {
+                            setState(() {
+                              Loading = true;
+                            });
+
+                            dynamic result =
+                                await Database(uid: currentuseruid!)
+                                    .Signinwithgoogle()
+                                    .onError((error, stackTrace) {
+                              print('this is the error - $error');
+                            });
+                            if (result != null) {
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.home.name);
+                            } else {
+                              Navigator.pop(context);
+                              setState(() {
+                                Loading = false;
+                              });
+                            }
+                          },
+                        ),
+                        SizedBox(
+                          width: screenWidth * 0.05,
+                        ),
+                        imagecontain(
+                          imagepath: 'images/anonymous.png',
+                          onpress: () async {
+                            setState(() {
+                              Loading = true;
+                            });
+
+                            dynamic result = await Database(uid: currentuseruid)
+                                .signinAnon();
+
+                            if (result == null) {
+                              print(null);
+                            } else {
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.home.name);
+                              setState(() {
+                                Loading = false;
+                              });
+                              print(FirebaseAuth.instance.currentUser);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                Text(
-                  error,
-                  style: GoogleFonts.aBeeZee(color: Colors.orange),
-                )
-              ],
-            ),
+              ),
+              SizedBox(
+                height: screenheight * 0.07,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Not a member yet ? ',
+                    style: GoogleFonts.aBeeZee(),
+                  ),
+                  InkWell(
+                    onTap: () =>
+                        Navigator.pushNamed(context, Routes.signup.name),
+                    child: Text(
+                      'Register now',
+                      style: GoogleFonts.aBeeZee(color: Colors.red),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: screenWidth * 0.05,
+              ),
+              Text(
+                error,
+                style: GoogleFonts.aBeeZee(color: Colors.orange),
+              )
+            ],
           ),
         ),
       ),
@@ -303,14 +314,15 @@ class _imagecontainState extends State<imagecontain> {
     return GestureDetector(
       onTap: widget.onpress,
       child: Container(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
         decoration: BoxDecoration(
           border:
               Border.all(color: Color.fromARGB(255, 120, 113, 113), width: 1),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius:
+              BorderRadius.circular(MediaQuery.of(context).size.width * 0.02),
         ),
         child: Image.asset(widget.imagepath!),
-        height: 50,
+        height: MediaQuery.of(context).size.height * 0.06,
       ),
     );
   }

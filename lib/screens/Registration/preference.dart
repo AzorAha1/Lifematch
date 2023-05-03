@@ -56,6 +56,8 @@ class _PreferencesState extends State<Preferences> {
 
   @override
   Widget build(BuildContext context) {
+    final Screenwidth = MediaQuery.of(context).size.width;
+    final Screenheight = MediaQuery.of(context).size.height;
     data = ModalRoute.of(context)?.settings.arguments as Map;
     String location = data['location'];
     String dateofbirth = data['dob'];
@@ -84,12 +86,12 @@ class _PreferencesState extends State<Preferences> {
                 children: [
                   InkWell(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(Screenwidth * 0.02),
                       child: Icon(Icons.arrow_back_ios),
                     ),
                   ),
                   SizedBox(
-                    width: 120,
+                    width: Screenwidth * 0.3,
                   ),
                   Text(
                     'Step 3 of 5',
@@ -98,14 +100,16 @@ class _PreferencesState extends State<Preferences> {
                 ],
               ),
               SizedBox(
-                height: 100,
+                height: Screenheight * 0.1,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8, bottom: 60),
+                padding: EdgeInsets.only(
+                    left: Screenwidth * 0.02, bottom: Screenheight * 0.09),
                 child: Text(
                   'I am interested in',
                   style: GoogleFonts.aBeeZee(
-                      fontSize: 40, fontWeight: FontWeight.w900),
+                      fontSize: Screenheight * 0.05,
+                      fontWeight: FontWeight.w900),
                 ),
               ),
               Row(
@@ -142,10 +146,10 @@ class _PreferencesState extends State<Preferences> {
                 ],
               ),
               SizedBox(
-                height: 40,
+                height: Screenheight * 0.05,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 300),
+                padding: EdgeInsets.only(left: Screenwidth * 0.75),
                 child: Text(
                   '${rangeValues.start.round().toString()} - ${rangeValues.end.round().toString()} years',
                   style: GoogleFonts.aBeeZee(
@@ -166,7 +170,7 @@ class _PreferencesState extends State<Preferences> {
                     });
                   }),
               SizedBox(
-                height: 50,
+                height: Screenheight * 0.08,
               ),
               newbutton(
                   text: Text('Next'),
@@ -178,21 +182,22 @@ class _PreferencesState extends State<Preferences> {
                     print(
                         "${min.round().toString()} is the min age i'm dating\n ${max.round().toString()} is the max age i'm dating");
                     await Future.delayed(Duration(seconds: 2), () {
-                      Navigator.pushNamed(context, Routes.interests.name, arguments: {
-                        'location': location,
-                        'dob': dateofbirth,
-                        'gender': gender,
-                        'interest': selectedsex,
-                        'bio': bio,
-                        'minimumage': min.toString(),
-                        'maximumage': max.toString(),
-                        'img1': img1,
-                        'img2': img2,
-                        'img3': img3,
-                        'img4': img4,
-                        'img5': img5,
-                        'img6': img6,
-                      });
+                      Navigator.pushNamed(context, Routes.interests.name,
+                          arguments: {
+                            'location': location,
+                            'dob': dateofbirth,
+                            'gender': gender,
+                            'interest': selectedsex,
+                            'bio': bio,
+                            'minimumage': min.toString(),
+                            'maximumage': max.toString(),
+                            'img1': img1,
+                            'img2': img2,
+                            'img3': img3,
+                            'img4': img4,
+                            'img5': img5,
+                            'img6': img6,
+                          });
                     });
 
                     setState(() {
@@ -219,14 +224,16 @@ class newcontainer extends StatefulWidget {
 class _newcontainerState extends State<newcontainer> {
   @override
   Widget build(BuildContext context) {
+    final Screenheight = MediaQuery.of(context).size.height;
+    final Screenwidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(Screenheight * 0.01),
       child: Container(
         child: Center(child: widget.text),
-        height: 55,
-        width: 180,
+        height: Screenheight * 0.07,
+        width: Screenwidth * 0.05,
         decoration: BoxDecoration(
-            color: widget.color, borderRadius: BorderRadius.circular(25)),
+            color: widget.color, borderRadius: BorderRadius.circular(Screenwidth * 0.08)),
       ),
     );
   }

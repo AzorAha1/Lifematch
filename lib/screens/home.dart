@@ -49,13 +49,15 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    final Screenwidth = MediaQuery.of(context).size.width;
+    final Screenheight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         
         bottomNavigationBar: Container(
           color: Color(0xffBEA0FF),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: Screenwidth * 0.02,vertical: Screenheight * 0.01),
             child: GNav(
               onTabChange: (value) {
                 setState(() {
@@ -63,19 +65,19 @@ class _HomepageState extends State<Homepage> {
                 });
               },
               
-              tabBorderRadius: 20,
+              tabBorderRadius: Screenheight * 0.02,
               tabBackgroundColor: Colors.black.withOpacity(0.2),
               backgroundColor:Color(0xffBEA0FF),
               selectedIndex: _currentindex,
-              padding: EdgeInsets.all(25),
-              iconSize: 15,
+              padding: EdgeInsets.all(Screenwidth * 0.05),
+              iconSize: Screenheight * 0.02,
               gap: 8,
-              tabs: const [
+              tabs: [
                 GButton(
                   haptic: true,
                   icon: LineIcons.home,
                   iconColor: Colors.white,
-                  iconSize: 25,
+                  iconSize: Screenheight * 0.025,
                   text: 'Home',
                   textColor: Colors.white,
                   iconActiveColor: Color(0xffBEA0FF),
@@ -84,7 +86,7 @@ class _HomepageState extends State<Homepage> {
                   haptic: true,
                   icon: LineIcons.heart,
                   iconColor: Colors.white,
-                  iconSize: 25,
+                  iconSize: Screenheight * 0.025,
                   text: 'Likes',
                   textColor: Colors.white,
                   iconActiveColor: Color(0xffBEA0FF),
@@ -92,7 +94,7 @@ class _HomepageState extends State<Homepage> {
                 GButton(
                   haptic: true,
                   icon: LineIcons.facebookMessenger,
-                  iconSize: 25,
+                  iconSize: Screenheight * 0.025,
                   text: 'Chats',
                   textColor: Colors.white,
                   iconColor: Colors.white,

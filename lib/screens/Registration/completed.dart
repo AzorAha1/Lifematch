@@ -22,6 +22,8 @@ class _FirstnameState extends State<Firstname> {
 
   @override
   Widget build(BuildContext context) {
+    final Screenwidth = MediaQuery.of(context).size.width;
+    final Screenheight = MediaQuery.of(context).size.height;
     data = ModalRoute.of(context)?.settings.arguments as Map;
 
     String location = data['location'];
@@ -52,12 +54,12 @@ class _FirstnameState extends State<Firstname> {
                 children: [
                   InkWell(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(Screenheight * 0.005),
                       child: Icon(Icons.arrow_back_ios),
                     ),
                   ),
                   SizedBox(
-                    width: 120,
+                    width: Screenwidth * 0.33,
                   ),
                   Text(
                     'Step 5 of 5',
@@ -66,18 +68,18 @@ class _FirstnameState extends State<Firstname> {
                 ],
               ),
               SizedBox(
-                height: 40,
+                height: Screenheight * 0.04,
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 70, left: 20),
+                padding: EdgeInsets.only(bottom: Screenheight * 0.05, left: Screenheight * 0.02),
                 child: Text(
                   'What do you want to be called ?',
                   style: GoogleFonts.aBeeZee(
-                      fontSize: 30, fontWeight: FontWeight.bold),
+                      fontSize: Screenheight * 0.06, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(Screenwidth * 0.02),
                 child: TextFormField(
                   onChanged: (value) {
                     setState(() {

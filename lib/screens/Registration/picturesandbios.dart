@@ -33,8 +33,9 @@ class _PicturesandbiosState extends State<Picturesandbios> {
   String bio = '';
   @override
   Widget build(BuildContext context) {
+    final Screenheight = MediaQuery.of(context).size.height;
+    final Screenwidth = MediaQuery.of(context).size.width;
     data = ModalRoute.of(context)?.settings.arguments as Map;
-
     String location = data['location'];
     String dateofbirth = data['dob'];
     String gender = data['gender'];
@@ -57,14 +58,16 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 2, left: 20),
+                              padding: EdgeInsets.only(
+                                  top: Screenheight * 0.01,
+                                  left: Screenwidth * 0.04),
                               child: InkWell(
                                 child: Icon(Icons.arrow_back_ios),
                               ),
                             ),
                             SizedBox(
-                              width: 150,
-                              height: 50,
+                              width: Screenwidth * 0.30,
+                              height: Screenheight * 0.03,
                             ),
                             Text(
                               'Step 2 of 5',
@@ -73,18 +76,23 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                           ],
                         ),
                         SizedBox(
-                          height: 60,
+                          height: Screenheight * 0.05,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 30, bottom: 30),
+                          padding: EdgeInsets.only(
+                              left: Screenwidth * 0.1,
+                              bottom: Screenheight * 0.03),
                           child: Text(
                             'Add Pictures',
-                            style: GoogleFonts.aBeeZee(fontSize: 30),
+                            style: GoogleFonts.aBeeZee(
+                                fontSize: Screenheight * 0.035),
                           ),
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            padding: EdgeInsets.only(
+                                left: Screenwidth * 0.02,
+                                right: Screenwidth * 0.02),
                             child: GridView.count(
                               crossAxisCount: 3,
                               children: [
@@ -94,13 +102,20 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                                           Icons.add,
                                           color: Colors.red,
                                         )
-                                      : Image.file(imagefile!,fit: BoxFit.cover,),
+                                      : Image.file(
+                                          imagefile!,
+                                          fit: BoxFit.cover,
+                                        ),
                                   onpress: () async {
-                                    final newfile = await ImagePicker()
-                                        .pickImage(source: ImageSource.gallery,);
+                                    final newfile =
+                                        await ImagePicker().pickImage(
+                                      source: ImageSource.gallery,
+                                    );
                                     if (newfile != null) {
                                       setState(() {
-                                        imagefile = File(newfile.path,);
+                                        imagefile = File(
+                                          newfile.path,
+                                        );
                                       });
                                     }
                                   },
@@ -111,7 +126,10 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                                           Icons.add,
                                           color: Colors.red,
                                         )
-                                      : Image.file(imagefile2!,fit: BoxFit.cover,),
+                                      : Image.file(
+                                          imagefile2!,
+                                          fit: BoxFit.cover,
+                                        ),
                                   onpress: () async {
                                     final newfile2 = await ImagePicker()
                                         .pickImage(source: ImageSource.gallery);
@@ -128,7 +146,10 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                                           Icons.add,
                                           color: Colors.red,
                                         )
-                                      : Image.file(imagefile3!,fit: BoxFit.cover,),
+                                      : Image.file(
+                                          imagefile3!,
+                                          fit: BoxFit.cover,
+                                        ),
                                   onpress: () async {
                                     var newfile3 = await ImagePicker()
                                         .pickImage(source: ImageSource.gallery);
@@ -145,7 +166,10 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                                           Icons.add,
                                           color: Colors.red,
                                         )
-                                      : Image.file(imagefile4!,fit: BoxFit.cover,),
+                                      : Image.file(
+                                          imagefile4!,
+                                          fit: BoxFit.cover,
+                                        ),
                                   onpress: () async {
                                     final newfile4 = await ImagePicker()
                                         .pickImage(source: ImageSource.gallery);
@@ -182,7 +206,10 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                                           Icons.add,
                                           color: Colors.red,
                                         )
-                                      : Image.file(imagefile6!,fit: BoxFit.cover,),
+                                      : Image.file(
+                                          imagefile6!,
+                                          fit: BoxFit.cover,
+                                        ),
                                   onpress: () async {
                                     final newfile6 = await ImagePicker()
                                         .pickImage(source: ImageSource.gallery);
@@ -197,17 +224,12 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            'Bio',
-                            style: GoogleFonts.aBeeZee(
-                                fontWeight: FontWeight.w900),
-                          ),
-                        ),
+                        
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            padding: EdgeInsets.only(
+                                left: Screenwidth * 0.05,
+                                right: Screenwidth * 0.05),
                             child: TextFormField(
                               onChanged: (value) {
                                 setState(() {
@@ -221,12 +243,14 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                                 }
                               },
                               decoration: InputDecoration(
-                                hintText: 'Write about yourself 😁',
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
+                                contentPadding: EdgeInsets.only(
+                                    left: Screenwidth * 0.03, top: Screenheight * 0, bottom: Screenheight * 0.16),
+                                label: Text('Bio'),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(10)
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                             ),
@@ -240,18 +264,19 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                                 Loading = true;
                               });
 
-                              Navigator.pushNamed(context, Routes.preferences.name,
+                              Navigator.pushNamed(
+                                  context, Routes.preferences.name,
                                   arguments: {
                                     'location': location,
                                     'dob': dateofbirth,
                                     'gender': gender,
                                     'bio': bio_controller.text,
-                                    'img1':imagefile,
-                                    'img2':imagefile2,
-                                    'img3':imagefile3,
-                                    'img4':imagefile4,
-                                    'img5':imagefile5,
-                                    'img6':imagefile6,
+                                    'img1': imagefile,
+                                    'img2': imagefile2,
+                                    'img3': imagefile3,
+                                    'img4': imagefile4,
+                                    'img5': imagefile5,
+                                    'img6': imagefile6,
                                   });
                               setState(() {
                                 Loading = false;
@@ -284,18 +309,21 @@ class pictureadd extends StatefulWidget {
 class _pictureaddState extends State<pictureadd> {
   @override
   Widget build(BuildContext context) {
+    final Screenwidth = MediaQuery.of(context).size.width;
+    final Screenheight = MediaQuery.of(context).size.height;
     return Padding(
-      padding: const EdgeInsets.all(9.0),
+      padding: EdgeInsets.all(Screenwidth * 0.03),
       child: GestureDetector(
         onLongPress: widget.onlongpress,
         onTap: widget.onpress,
         child: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-                color: Color.fromARGB(255, 212, 207, 207),
-                borderRadius: BorderRadius.circular(20)),
-            child: widget.child,),
+          height: Screenheight * 0.05,
+          width: Screenwidth * 0.05,
+          decoration: BoxDecoration(
+              color: Color.fromARGB(255, 212, 207, 207),
+              borderRadius: BorderRadius.circular(Screenwidth * 0.05)),
+          child: widget.child,
+        ),
       ),
     );
   }

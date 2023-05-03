@@ -303,6 +303,8 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
+    final Screenheight = MediaQuery.of(context).size.height;
+    final Screenwidth = MediaQuery.of(context).size.width;
     return ModalProgressHUD(
       inAsyncCall: Loading,
       child: SafeArea(
@@ -324,18 +326,26 @@ class _SignupState extends State<Signup> {
                             Row(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 2, left: 20),
+                                  padding: EdgeInsets.only(
+                                      top: Screenheight * 0.001,
+                                      left: Screenwidth * 0.04),
                                   child: InkWell(
                                     child: Icon(Icons.arrow_back_ios),
+                                    onTap: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, Routes.main.name);
+                                    },
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 150,
-                                  height: 50,
+                                  width: Screenwidth * 0.32,
+                                  height: Screenheight * 0.09,
                                 ),
                                 Text(
                                   'Step 1 of 5',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: Screenwidth * 0.035),
                                 ),
                               ],
                             ),
@@ -344,18 +354,22 @@ class _SignupState extends State<Signup> {
                             //   height: 10,
                             // ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 20),
+                              padding:
+                                  EdgeInsets.only(left: Screenwidth * 0.05),
                               child: Text(
                                 'Profile info',
-                                style: GoogleFonts.aBeeZee(fontSize: 30),
+                                style: GoogleFonts.aBeeZee(
+                                    fontSize: Screenheight * 0.04),
                               ),
                             ),
                             SizedBox(
-                              height: 50,
+                              height: Screenheight * 0.05,
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 20, left: 20, bottom: 20),
+                              padding: EdgeInsets.only(
+                                  right: Screenwidth * 0.05,
+                                  left: Screenwidth * 0.05,
+                                  bottom: Screenheight * 0.02),
                               child: TextFormField(
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -368,16 +382,17 @@ class _SignupState extends State<Signup> {
                                     email = value;
                                   });
                                 },
-                              
                                 decoration: ktextformfield.copyWith(
                                   hintText: 'Username or Email',
                                   hintStyle: GoogleFonts.aBeeZee(),
-                                 ),
+                                ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 20, left: 20, bottom: 20),
+                              padding: EdgeInsets.only(
+                                  right: Screenwidth * 0.05,
+                                  left: Screenwidth * 0.05,
+                                  bottom: Screenheight * 0.02),
                               child: TextFormField(
                                 obscureText: true,
                                 validator: (value) {
@@ -397,8 +412,10 @@ class _SignupState extends State<Signup> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 20, left: 20, bottom: 20),
+                              padding: EdgeInsets.only(
+                                  right: Screenwidth * 0.05,
+                                  left: Screenwidth * 0.05,
+                                  bottom: Screenheight * 0.02),
                               child: Stack(
                                 children: [
                                   TextFormField(
@@ -414,29 +431,32 @@ class _SignupState extends State<Signup> {
                                         hintStyle: GoogleFonts.aBeeZee()),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.only(left: 320, top: 15),
+                                    padding: EdgeInsets.only(
+                                        left: Screenwidth * 0.8,
+                                        top: Screenheight * 0.02),
                                     child: InkWell(
                                       onTap: () {
                                         showdaytime().then((value) {
                                           setState(() {
                                             _currentdate = value;
-                
-                                            dob_controller.text =
-                                                value.toString().substring(0, 10);
+
+                                            dob_controller.text = value
+                                                .toString()
+                                                .substring(0, 10);
                                           });
                                         });
                                       },
-                                      child: Icon(Icons.calendar_month_outlined),
+                                      child:
+                                          Icon(Icons.calendar_month_outlined),
                                     ),
                                   )
                                 ],
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                right: 20,
-                                left: 20,
+                              padding: EdgeInsets.only(
+                                right: Screenwidth * 0.05,
+                                left: Screenwidth * 0.05,
                               ),
                               child: Stack(children: [
                                 TextFormField(
@@ -452,31 +472,35 @@ class _SignupState extends State<Signup> {
                                       hintStyle: GoogleFonts.aBeeZee()),
                                 ),
                                 SizedBox(
-                                  height: 100,
+                                  height: Screenheight * 0.09,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 270),
+                                  padding:
+                                      EdgeInsets.only(left: Screenwidth * 0.65),
                                   child: DropdownButton<String>(
                                     value: _selectedgender,
                                     items: [
                                       DropdownMenuItem(
                                         child: Text(
                                           '*Empty*',
-                                          style: GoogleFonts.aBeeZee(fontSize: 15),
+                                          style: GoogleFonts.aBeeZee(
+                                              fontSize: Screenheight * 0.017),
                                         ),
                                         value: 'empty',
                                       ),
                                       DropdownMenuItem(
                                         child: Text(
                                           'Male',
-                                          style: GoogleFonts.aBeeZee(fontSize: 15),
+                                          style: GoogleFonts.aBeeZee(
+                                              fontSize: Screenheight * 0.017),
                                         ),
                                         value: 'male',
                                       ),
                                       DropdownMenuItem(
                                         child: Text(
                                           'Female',
-                                          style: GoogleFonts.aBeeZee(fontSize: 15),
+                                          style: GoogleFonts.aBeeZee(
+                                              fontSize: Screenheight * 0.017),
                                         ),
                                         value: 'female',
                                       ),
@@ -493,13 +517,15 @@ class _SignupState extends State<Signup> {
                               ]),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                right: 20,
-                                left: 20,
+                              padding: EdgeInsets.only(
+                                right: Screenwidth * 0.02,
+                                left: Screenwidth * 0.02,
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 20),
+                              padding: EdgeInsets.only(
+                                  left: Screenwidth * 0.05,
+                                  right: Screenwidth * 0.05),
                               child: TextFormField(
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -514,8 +540,10 @@ class _SignupState extends State<Signup> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 60, top: 10, bottom: 20),
+                              padding: EdgeInsets.only(
+                                  left: Screenwidth * 0.17,
+                                  top: Screenheight * 0.02,
+                                  bottom: Screenheight * 0.03),
                               child: DropdownButton<String>(
                                 value: selectedcountry,
                                 onChanged: (value) {
@@ -533,23 +561,24 @@ class _SignupState extends State<Signup> {
                               ),
                             ),
                             SizedBox(
-                              height: 50,
+                              height: Screenheight * 0.02,
                             ),
                             newbutton(
                                 text: Text('Next',
                                     style: GoogleFonts.aBeeZee(
-                                        color: Color.fromARGB(255, 228, 225, 225))),
+                                        color: Color.fromARGB(
+                                            255, 228, 225, 225))),
                                 onpress: () async {
                                   if (_formkey.currentState!.validate()) {
                                     setState(() {
                                       Loading = true;
                                     });
-                                    dynamic result =
-                                        await Database(uid: currentuseruid)
-                                            .signupWithEmailandPassword(
-                                                email: email_controller.text,
-                                                password: password_controller.text);
-                
+                                    dynamic result = await Database(
+                                            uid: currentuseruid)
+                                        .signupWithEmailandPassword(
+                                            email: email_controller.text,
+                                            password: password_controller.text);
+
                                     if (result != null) {
                                       Database(uid: currentuseruid).adduserinfo(
                                           gender: gender_controller.text,
@@ -560,7 +589,8 @@ class _SignupState extends State<Signup> {
                                       Navigator.pushNamed(
                                           context, Routes.picturesandbios.name,
                                           arguments: {
-                                            'location': location_controller.text,
+                                            'location':
+                                                location_controller.text,
                                             'dob': formatteddate.toString(),
                                             'gender': gender_controller.text,
                                           });

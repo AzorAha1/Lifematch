@@ -42,6 +42,8 @@ class _ForgotpasswordState extends State<Forgotpassword> {
 
   @override
   Widget build(BuildContext context) {
+    final Screenwidth = MediaQuery.of(context).size.width;
+    final Screenheight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Column(
         children: [

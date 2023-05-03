@@ -259,6 +259,8 @@ class _InterestsState extends State<Interests> {
 
   @override
   Widget build(BuildContext context) {
+    final Screenwidth = MediaQuery.of(context).size.width;
+    final Screenheight = MediaQuery.of(context).size.height;
     data = ModalRoute.of(context)?.settings.arguments as Map;
     String location = data['location'];
     String gender = data['gender'];
@@ -285,12 +287,12 @@ class _InterestsState extends State<Interests> {
               children: [
                 InkWell(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(Screenwidth * 0.02),
                     child: Icon(Icons.arrow_back_ios),
                   ),
                 ),
                 SizedBox(
-                  width: 120,
+                  width: Screenwidth * 0.3,
                 ),
                 Text(
                   'Step 4 of 5',
@@ -299,19 +301,19 @@ class _InterestsState extends State<Interests> {
               ],
             ),
             SizedBox(
-              height: 50,
+              height: Screenheight * 0.07,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: Screenwidth * 0.045),
               child: Text(
                 'Select Topics your are Interested in',
                 style: GoogleFonts.aBeeZee(
-                    fontSize: 20, fontWeight: FontWeight.w900),
+                    fontSize: Screenheight * 0.025, fontWeight: FontWeight.w900),
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(Screenwidth * 0.02),
                 child: GridView.count(
                   crossAxisCount: 4,
                   children: [
@@ -584,24 +586,25 @@ class _InterestsState extends State<Interests> {
               ),
             ),
             newbutton(
-                text: Text('Complete'),
+                text: Text('Next'),
                 onpress: () {
-                  Navigator.pushNamed(context, Routes.completed.name, arguments: {
-                    'listofhobbies': listofhobbies,
-                    'gender': gender,
-                    'bio': bio,
-                    'dob': dateofbirth,
-                    'interest': interest,
-                    'location': location,
-                    'minimumage': minimumage,
-                    'maximumage': maximumage,
-                    'img1':img1,
-                    'img2':img2,
-                    'img3':img3,
-                    'img4':img4,
-                    'img5':img5,
-                    'img6':img6,
-                  });
+                  Navigator.pushNamed(context, Routes.completed.name,
+                      arguments: {
+                        'listofhobbies': listofhobbies,
+                        'gender': gender,
+                        'bio': bio,
+                        'dob': dateofbirth,
+                        'interest': interest,
+                        'location': location,
+                        'minimumage': minimumage,
+                        'maximumage': maximumage,
+                        'img1': img1,
+                        'img2': img2,
+                        'img3': img3,
+                        'img4': img4,
+                        'img5': img5,
+                        'img6': img6,
+                      });
                   print(listofhobbies);
                 })
           ],
@@ -624,11 +627,13 @@ class interestcontainer extends StatefulWidget {
 class _interestcontainerState extends State<interestcontainer> {
   @override
   Widget build(BuildContext context) {
+    final Screenwidth = MediaQuery.of(context).size.width;
+    final Screenheight = MediaQuery.of(context).size.height;
     return Padding(
-      padding: const EdgeInsets.only(top: 50, right: 10, left: 5, bottom: 10),
+      padding: EdgeInsets.only(top: Screenheight * 0.05, right: Screenwidth * 0.02, left: Screenwidth * 0.02, bottom: Screenheight * 0.013),
       child: Container(
-        height: 20,
-        width: 10,
+        height: Screenheight * 0.05,
+        width: Screenwidth * 0.05,
         decoration: BoxDecoration(
             color: widget.color, borderRadius: BorderRadius.circular(20)),
         child: Center(child: widget.text),
