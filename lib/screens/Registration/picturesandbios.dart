@@ -10,13 +10,6 @@ import 'package:lifematch/screens/mainpage.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-File? imagefile;
-File? imagefile2;
-File? imagefile3;
-File? imagefile4;
-File? imagefile5;
-File? imagefile6;
-
 class Picturesandbios extends StatefulWidget {
   const Picturesandbios({super.key});
 
@@ -25,12 +18,44 @@ class Picturesandbios extends StatefulWidget {
 }
 
 class _PicturesandbiosState extends State<Picturesandbios> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    File? imagefile;
+    File? imagefile2;
+    File? imagefile3;
+    File? imagefile4;
+    File? imagefile5;
+    File? imagefile6;
+    String bio = '';
+  }
+
   Map data = {};
+  File? imagefile;
+  File? imagefile2;
+  File? imagefile3;
+  File? imagefile4;
+  File? imagefile5;
+  File? imagefile6;
+  String bio = '';
+
+  @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   super.dispose();
+  //   imagefile;
+  //   imagefile2;
+  //   imagefile3;
+  //   imagefile4;
+  //   imagefile5;
+  //   imagefile6;
+  // }
 
   bool Loading = false;
   final _formkey = GlobalKey<FormState>();
   TextEditingController bio_controller = TextEditingController();
-  String bio = '';
+
   @override
   Widget build(BuildContext context) {
     final Screenheight = MediaQuery.of(context).size.height;
@@ -224,7 +249,6 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                             ),
                           ),
                         ),
-                        
                         Expanded(
                           child: Padding(
                             padding: EdgeInsets.only(
@@ -244,11 +268,12 @@ class _PicturesandbiosState extends State<Picturesandbios> {
                               },
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
-                                    left: Screenwidth * 0.03, top: Screenheight * 0, bottom: Screenheight * 0.16),
+                                    left: Screenwidth * 0.03,
+                                    top: Screenheight * 0,
+                                    bottom: Screenheight * 0.16),
                                 label: Text('Bio'),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)
-                                ),
+                                    borderRadius: BorderRadius.circular(10)),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

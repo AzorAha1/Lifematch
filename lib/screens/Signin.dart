@@ -141,17 +141,19 @@ class _SigninState extends State<Signin> {
                             setState(() {
                               Loading = true;
                             });
-                            dynamic result =
-                                await Database(uid: currentuseruid!)
+                            dynamic signinwithemailandpass =
+                                await Database(uid: currentuseruid)
                                     .signinWithEmailandPassword(
                                         email: email, password: password);
-                            if (result != null) {
+                            if (signinwithemailandpass != null) {
                               setState(() {
                                 Loading = false;
-                                Navigator.pushNamed(context, Routes.home.name);
-
-                                print('logged in');
                               });
+                              print(currentuser);
+                              Navigator.pushNamed(context, Routes.home.name);
+
+                              print('logged in');
+
                               email_controller.clear();
                               password_controller.clear();
                             } else {
@@ -218,7 +220,7 @@ class _SigninState extends State<Signin> {
                             });
 
                             dynamic result =
-                                await Database(uid: currentuseruid!)
+                                await Database(uid: currentuseruid)
                                     .Signinwithgoogle()
                                     .onError((error, stackTrace) {
                               print('this is the error - $error');
@@ -247,14 +249,15 @@ class _SigninState extends State<Signin> {
                             dynamic result = await Database(uid: currentuseruid)
                                 .signinAnon();
 
-                            if (result == null) {
-                              print(null);
-                            } else {
+                            if (result != null) {
                               Navigator.pushReplacementNamed(
                                   context, Routes.home.name);
                               setState(() {
                                 Loading = false;
                               });
+                              print(FirebaseAuth.instance.currentUser);
+                            } else {
+                              print(null);
                               print(FirebaseAuth.instance.currentUser);
                             }
                           },

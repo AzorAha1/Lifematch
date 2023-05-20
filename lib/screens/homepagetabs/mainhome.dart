@@ -70,6 +70,7 @@ class _mainhomeState extends State<mainhome> {
                         user?.email?.substring(0, 1).toUpperCase() ?? 'null',
                         style: GoogleFonts.aBeeZee(color: Colors.teal),
                       ),
+                      
                     ),
                   ),
                   SizedBox(width: Screenwidth * 0.05),

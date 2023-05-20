@@ -50,6 +50,7 @@ dependencies:
   cupertino_stepper: ^0.2.1
   calender_picker: ^1.0.7
   image_picker: ^0.8.6+4
+  flutter_phoenix: "^1.0.0"
 
 
 

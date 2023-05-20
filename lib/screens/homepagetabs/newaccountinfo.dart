@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lifematch/main.dart';
 import 'package:lifematch/screens/Registration/picturesandbios.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class NewAccountinfo extends StatefulWidget {
   const NewAccountinfo({super.key});
@@ -40,6 +41,8 @@ class _NewAccountinfoState extends State<NewAccountinfo> {
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text(snapshot.error.toString()));
             }
             String image1 = snapshot.data?.get('image 1');
             String firstname = snapshot.data?.get('firstname');
@@ -116,7 +119,6 @@ class _NewAccountinfoState extends State<NewAccountinfo> {
                     thickness: screenWidth * 0.002,
                   ),
                 ),
-                
                 MaterialButton(
                   child: Text(
                     'Log out',
@@ -130,6 +132,7 @@ class _NewAccountinfoState extends State<NewAccountinfo> {
                   height: screenheight * 0.06,
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
+                    Phoenix.rebirth(context);
                     Navigator.pushReplacementNamed(context, Routes.signin.name);
                   },
                 ),
@@ -161,7 +164,8 @@ class _profileitemsState extends State<profileitems> {
         print('pressed');
       },
       child: Padding(
-        padding: EdgeInsets.only(left:screenWidth * 0.03  , right: screenWidth * 0.02),
+        padding: EdgeInsets.only(
+            left: screenWidth * 0.03, right: screenWidth * 0.02),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

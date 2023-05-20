@@ -18,6 +18,17 @@ class Preferences extends StatefulWidget {
 }
 
 class _PreferencesState extends State<Preferences> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    String selectedsex = '';
+    Color mancardColor = inactiveColor;
+    Color womancardColor = inactiveColor;
+    dynamic min = rangeValues.start;
+    dynamic max = rangeValues.end;
+  }
+
   Map data = {};
   bool Loading = false;
   String selectedsex = '';
@@ -233,7 +244,8 @@ class _newcontainerState extends State<newcontainer> {
         height: Screenheight * 0.07,
         width: Screenwidth * 0.05,
         decoration: BoxDecoration(
-            color: widget.color, borderRadius: BorderRadius.circular(Screenwidth * 0.08)),
+            color: widget.color,
+            borderRadius: BorderRadius.circular(Screenwidth * 0.08)),
       ),
     );
   }

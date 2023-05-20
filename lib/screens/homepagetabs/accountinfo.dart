@@ -8,6 +8,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:lifematch/Database/auth.dart';
 import 'package:line_icons/line_icon.dart';
 
+
 class Accountinfo extends StatefulWidget {
   const Accountinfo({super.key});
 
@@ -51,6 +52,8 @@ class _AccountinfoState extends State<Accountinfo> {
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text(snapshot.error.toString()));
                 }
                 b = snapshot.data!.get('bio') ?? 'No bio yet';
                 hobbies = snapshot.data!.get('hobbies');
