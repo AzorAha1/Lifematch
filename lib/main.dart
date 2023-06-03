@@ -12,6 +12,10 @@ import 'package:lifematch/screens/home.dart';
 import 'package:lifematch/screens/mainpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lifematch/screens/profilepages/contactus.dart';
+import 'package:lifematch/screens/profilepages/editprofile.dart';
+import 'package:lifematch/screens/profilepages/notifications.dart';
+import 'package:lifematch/screens/profilepages/settings.dart';
 
 enum Routes {
   main,
@@ -23,6 +27,10 @@ enum Routes {
   preferences,
   interests,
   completed,
+  contactus,
+  editprofile,
+  notifications,
+  settings,
 }
 
 void main() async {
@@ -65,6 +73,10 @@ class _MyAppState extends State<MyApp> {
         Routes.preferences.name: (context) => Preferences(),
         Routes.interests.name: (context) => Interests(),
         Routes.completed.name: (context) => Firstname(),
+        Routes.contactus.name:(context) => Contactus(),
+        Routes.editprofile.name:(context) => Editprofile(),
+        Routes.notifications.name:(context) => Notifications(),
+        Routes.settings.name:(context) => Settingpage(),
       },
     );
   }

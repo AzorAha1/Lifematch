@@ -74,7 +74,7 @@ class _NewAccountinfoState extends State<NewAccountinfo> {
                 ),
                 profileitems(
                   icon: Icons.edit_document,
-                  title: 'Edit profile',
+                  title: 'Profile',
                 ),
                 SizedBox(
                   height: screenheight * 0.07,
@@ -87,6 +87,9 @@ class _NewAccountinfoState extends State<NewAccountinfo> {
                 profileitems(
                   icon: Icons.settings,
                   title: 'Settings',
+                  ontap: () {
+                    Navigator.pushNamed(context, Routes.settings.name);
+                  },
                 ),
                 SizedBox(
                   height: screenheight * 0.07,
@@ -149,7 +152,8 @@ class _NewAccountinfoState extends State<NewAccountinfo> {
 class profileitems extends StatefulWidget {
   String? title;
   IconData icon;
-  profileitems({this.title, required this.icon});
+  Function()? ontap;
+  profileitems({this.title, required this.icon, this.ontap});
 
   @override
   State<profileitems> createState() => _profileitemsState();
@@ -161,9 +165,7 @@ class _profileitemsState extends State<profileitems> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenheight = MediaQuery.of(context).size.height;
     return GestureDetector(
-      onTap: () {
-        print('pressed');
-      },
+      onTap: widget.ontap,
       child: Padding(
         padding: EdgeInsets.only(
             left: screenWidth * 0.03, right: screenWidth * 0.02),
