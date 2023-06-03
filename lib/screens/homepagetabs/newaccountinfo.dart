@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lifematch/main.dart';
 import 'package:lifematch/screens/Registration/picturesandbios.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:restart_app/restart_app.dart';
 
 class NewAccountinfo extends StatefulWidget {
   const NewAccountinfo({super.key});
@@ -132,8 +133,8 @@ class _NewAccountinfoState extends State<NewAccountinfo> {
                   height: screenheight * 0.06,
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
-                    Phoenix.rebirth(context);
                     Navigator.pushReplacementNamed(context, Routes.signin.name);
+                    //MyApp.restartthis(context);
                   },
                 ),
               ],

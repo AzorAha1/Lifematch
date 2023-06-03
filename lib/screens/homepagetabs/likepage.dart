@@ -15,20 +15,14 @@ class Likepage extends StatefulWidget {
 }
 
 class _LikepageState extends State<Likepage> {
-  List<DocumentSnapshot> users = [];
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemBuilder: (context, int index) {
-          final user = users[index];
-          return ListTile(
-            title: Text(user['firstname'],),
-            subtitle: Text(user['gender']),
-          );
-        },
-        itemCount: users.length,
-      ),
+      body: Center(
+        child: Text('No Likes Yet'),
+      )
+      
     );
   }
 }

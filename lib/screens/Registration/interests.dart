@@ -288,7 +288,10 @@ class _InterestsState extends State<Interests> {
                 InkWell(
                   child: Padding(
                     padding: EdgeInsets.all(Screenwidth * 0.02),
-                    child: Icon(Icons.arrow_back_ios),
+                    child: InkWell(
+                      child: Icon(Icons.arrow_back_ios),
+                      onTap: () => Navigator.pop(context),
+                    ),
                   ),
                 ),
                 SizedBox(
