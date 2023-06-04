@@ -15,6 +15,7 @@ class Settingpage extends StatefulWidget {
 
 class _SettingpageState extends State<Settingpage> {
   File? _profilepic;
+  final user = FirebaseAuth.instance.currentUser?.email;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
@@ -66,22 +67,38 @@ class _SettingpageState extends State<Settingpage> {
                     height: 20,
                   ),
                   Container(
+                    
                     height: 100,
-                    width: 350,
+                    width: 400,
                     decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                        Color.fromARGB(255, 1, 25, 46),
+                        Color.fromARGB(255, 5, 65, 114),
+                        Color.fromARGB(255, 12, 136, 238)
+                      ]),
                       borderRadius: BorderRadius.circular(12),
                       color: Colors.red,
                     ),
                     child: Row(
                       children: [
-                        SizedBox(width: 17,),
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundImage: FileImage(_profilepic!),
-
+                        SizedBox(
+                          width: 20,
                         ),
-                        SizedBox(width: 3),
-                        Text(_firstname),
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage: FileImage(_profilepic!),
+                        ),
+                        SizedBox(width: 10),
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(_firstname,style: TextStyle(color: Colors.white),),
+                            Text(_user!.email.toString(),style: TextStyle(color: Colors.white),),
+                            Text('ID:${_user.uid}',style: TextStyle(color: Colors.white),),
+                          ],
+                        )
                       ],
                     ),
                   ),
