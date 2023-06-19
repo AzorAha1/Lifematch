@@ -100,6 +100,7 @@ class _NewAccountinfoState extends State<NewAccountinfo> {
                   ),
                 ),
                 profileitems(
+                  ontap: () => Navigator.pushNamed(context, Routes.contactus.name),
                   icon: Icons.message,
                   title: 'Contact us',
                 ),
@@ -151,9 +152,10 @@ class _NewAccountinfoState extends State<NewAccountinfo> {
 
 class profileitems extends StatefulWidget {
   String? title;
-  IconData icon;
+
+  IconData? icon;
   Function()? ontap;
-  profileitems({this.title, required this.icon, this.ontap});
+  profileitems({this.title, this.icon, this.ontap});
 
   @override
   State<profileitems> createState() => _profileitemsState();
