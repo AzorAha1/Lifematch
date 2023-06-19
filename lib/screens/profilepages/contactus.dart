@@ -27,10 +27,10 @@ class _ContactusState extends State<Contactus> {
                 onTap: () => Navigator.pop(context),
               ),
               SizedBox(
-                width: 30,
+                width: 100,
               ),
               Text(
-                'Settings',
+                'Contact us',
                 style: GoogleFonts.aBeeZee(
                     fontWeight: FontWeight.bold, fontSize: 30),
               ),
@@ -39,6 +39,12 @@ class _ContactusState extends State<Contactus> {
           SizedBox(
             height: 20,
           ),
+          SizedBox(height: 30,),
+          Text('wizfaiz@icloud.com'),
+          SizedBox(height: 20,),
+          Text('+234 8127777835'),
+          SizedBox(height: 650,),
+          Text('Lifematch Ltd',style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold),),
         ],
       ),
     );
