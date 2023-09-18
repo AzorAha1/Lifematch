@@ -44,7 +44,7 @@ class _ContactusState extends State<Contactus> {
           SizedBox(height: 20,),
           Text('+234 8127777835'),
           SizedBox(height: 650,),
-          Text('Lifematch Ltd',style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold),),
+          Text('Lifematch Ltd',style: GoogleFonts.aBeeZee(fontWeight: FontWeight.bold,color: Colors.red),),
         ],
       ),
     );
