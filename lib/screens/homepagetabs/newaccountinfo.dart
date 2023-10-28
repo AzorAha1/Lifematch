@@ -115,6 +115,7 @@ class _NewAccountinfoState extends State<NewAccountinfo> {
                 profileitems(
                   icon: Icons.notifications,
                   title: 'Notification',
+                  ontap: () => Navigator.pushNamed(context, Routes.notifications.name),
                 ),
                 SizedBox(
                   height: screenheight * 0.07,
