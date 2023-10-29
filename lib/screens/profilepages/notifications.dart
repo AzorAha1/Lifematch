@@ -50,9 +50,17 @@ class _NotificationsState extends State<Notifications> {
             width: screenWidth,
             height: screenHeight * 0.07,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.03),
+                  child: Text(
+                    "Enable Notifications",
+                    style: TextStyle(fontWeight: FontWeight.w500,fontSize: screenHeight * 0.018,color: Colors.black54),
+                  ),
+                ),
                 CupertinoSwitch(
-                  activeColor: Colors.black,
+                    activeColor: Colors.black,
                     value: switched!,
                     onChanged: (value) {
                       setState(() {
